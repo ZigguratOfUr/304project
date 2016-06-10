@@ -1,0 +1,68 @@
+package main;
+
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.AbstractButton;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+public class StartPage extends Page implements ActionListener
+{
+	JButton b1;
+	JScrollPane scrollPane;
+	
+	public StartPage(GUIMain mainComponent, DatabaseConnecter dc)
+	{
+		super(mainComponent, dc);
+	}
+
+	@Override
+	public void createPage() {
+		// TODO Auto-generated method stub
+		
+    	b1 = new JButton("Test table creation");
+        b1.setVerticalTextPosition(AbstractButton.BOTTOM);
+        b1.setHorizontalTextPosition(AbstractButton.CENTER);
+        b1.setActionCommand("create");
+        b1.addActionListener(this);
+
+        mainComponent.add(b1);
+	}
+
+	@Override
+	public void cleanPage()
+	{
+		// TODO Auto-generated method stub
+		mainComponent.remove(b1);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent evt)
+	{
+		if ("create".equals(evt.getActionCommand()))
+    	{
+    		Object[][] data = dc.getPersonnelTable();
+    		
+    		JTable table = new JTable(data, DatabaseConnecter.PERSONNEL_TABLE_COLUMN_NAMES);
+    		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
+    		table.setFillsViewportHeight(true);
+    		
+    		if (scrollPane!= null)
+    		{
+    			mainComponent.remove(scrollPane);
+    		}
+    		//Create the scroll pane and add the table to it.
+    		scrollPane = new JScrollPane(table);
+    		//Add the scroll pane to this panel.
+            
+    		mainComponent.add(scrollPane);
+    		mainComponent.revalidate();
+    		
+    	}
+		
+	}
+
+}

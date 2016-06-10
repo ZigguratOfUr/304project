@@ -10,6 +10,12 @@ import java.util.List;
 
 public class DatabaseConnecter
 {
+	public static final String[] PERSONNEL_TABLE_COLUMN_NAMES = {	"id",
+								            						"pname",
+								            						"phone",
+													        		"hireDate",
+													        		"airlineId"};
+	
 	Connection con;
 	
 	public DatabaseConnecter() throws SQLException
@@ -30,7 +36,8 @@ public class DatabaseConnecter
 		ResultSet rs;
 		List<Object[]> data = new LinkedList<Object[]>();
 		
-		try {
+		try
+		{
 			rs = getPersonnel();
 
 			while(rs.next())
@@ -38,8 +45,10 @@ public class DatabaseConnecter
 				Object[] row = {rs.getLong(1), rs.getString(2), rs.getLong(3), rs.getDate(4), rs.getLong(5)};
 				data.add(row);
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			rs.close();
+		}
+		catch (SQLException e)
+		{
 			e.printStackTrace();
 		}
 

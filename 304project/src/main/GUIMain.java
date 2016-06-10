@@ -1,6 +1,5 @@
 package main;
 
-import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -8,44 +7,51 @@ import javax.swing.*;
 public class GUIMain extends JPanel implements ActionListener 
 {
 	private static DatabaseConnecter dc;
-	private static JFrame frame;
+	static JFrame frame;
+	Page currentPage;
 	
     public GUIMain()
     {
-    	JButton b1 = new JButton("Test table creation");
-        b1.setVerticalTextPosition(AbstractButton.BOTTOM);
-        b1.setHorizontalTextPosition(AbstractButton.CENTER);
-        b1.setActionCommand("create");
-        b1.addActionListener(this);
-
-        add(b1);
-        
+    	currentPage = new StartPage(this, dc);
+    	currentPage.createPage();
     }
  
     public void actionPerformed(ActionEvent evt)
     {
-    	if ("create".equals(evt.getActionCommand()))
+    	if ("gotoStartPage".equals(evt.getActionCommand()))
     	{
-    		String[] columnNames = {"id",
-                    "pname",
-                    "phone",
-                    "hireDate",
-                    "airlineId"};
-
-    		Object[][] data = dc.getPersonnelTable();
-    		
-    		JTable table = new JTable(data, columnNames);
-    		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
-    		table.setFillsViewportHeight(true);
-    		
-    		//Create the scroll pane and add the table to it.
-    		JScrollPane scrollPane = new JScrollPane(table);
-    		//Add the scroll pane to this panel.
-            
-    		add(scrollPane);
-    		frame.pack();
+    		currentPage.cleanPage();
+    		currentPage = new StartPage(this, dc);
+    		currentPage.createPage();
+            revalidate();
+    		repaint();
+    	}
+    	else if ("gotoAdminLoginPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new AdminLoginPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	else if ("gotoCustomerLoginPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new CustomerLoginPage(this, dc);
+    		currentPage.createPage();   		
+    		revalidate();
+    		repaint();
+    	}
+    	else if ("gotoExamplePage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new ExamplePage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
     	}
     }
+
     
 	public static void createAndShowGUI(DatabaseConnecter dbc)
 	{
@@ -53,12 +59,12 @@ public class GUIMain extends JPanel implements ActionListener
 		//Create and set up the window.
         frame = new JFrame("GUIMain");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 
+        
         //Add contents to the window.
         frame.add(new GUIMain());
  
         //Display the window.
-        frame.pack();
+        frame.setSize(800,800);
         frame.setVisible(true);
 		
 	}

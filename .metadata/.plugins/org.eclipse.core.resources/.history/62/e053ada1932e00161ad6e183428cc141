@@ -1,0 +1,23 @@
+package main;
+
+public class StartPage extends Page
+{
+
+	public StartPage(GUIMain mainComponent, DatabaseConnecter dc)
+	{
+		super(mainComponent, dc);
+	}
+
+	@Override
+	public void createPage() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void cleanPage() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

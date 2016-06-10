@@ -1,0 +1,15 @@
+package main;
+
+public abstract class Page
+{
+	GUIMain mainComponent;
+	
+	public Page(GUIMain mainComponent)
+	{
+		this.mainComponent = mainComponent;
+	}
+
+	public abstract void createPage();
+	
+	public abstract void cleanPage();
+}

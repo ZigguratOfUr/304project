@@ -1,0 +1,35 @@
+package main;
+
+import javax.swing.AbstractButton;
+import javax.swing.JButton;
+
+public class StartPage extends Page
+{
+	JButton b1;
+	
+	public StartPage(GUIMain mainComponent, DatabaseConnecter dc)
+	{
+		super(mainComponent, dc);
+	}
+
+	@Override
+	public void createPage() {
+		// TODO Auto-generated method stub
+		
+    	b1 = new JButton("Test table creation");
+        b1.setVerticalTextPosition(AbstractButton.BOTTOM);
+        b1.setHorizontalTextPosition(AbstractButton.CENTER);
+        b1.setActionCommand("create");
+        b1.addActionListener(mainComponent);
+
+        mainComponent.add(b1);
+	}
+
+	@Override
+	public void cleanPage()
+	{
+		// TODO Auto-generated method stub
+		mainComponent.remove(b1);
+	}
+
+}

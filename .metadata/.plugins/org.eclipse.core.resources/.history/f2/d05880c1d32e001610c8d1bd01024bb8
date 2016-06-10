@@ -1,0 +1,45 @@
+package main;
+
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.AbstractButton;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+public class AdminLoginPage extends Page implements ActionListener
+{
+	JButton b1;
+	
+	public AdminLoginPage(GUIMain mainComponent, DatabaseConnecter dc)
+	{
+		super(mainComponent, dc);
+	}
+
+	@Override
+	public void createPage()
+	{
+    	b1 = new JButton("Test table creation");
+        b1.setVerticalTextPosition(AbstractButton.BOTTOM);
+        b1.setHorizontalTextPosition(AbstractButton.CENTER);
+        b1.setActionCommand("createPersonnelTable");
+        b1.addActionListener(this);
+
+        mainComponent.add(b1);
+	}
+
+	@Override
+	public void cleanPage()
+	{
+		mainComponent.remove(b1);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent evt)
+	{
+		
+	}
+
+}
