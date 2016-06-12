@@ -50,6 +50,22 @@ public class GUIMain extends JPanel implements ActionListener
     		revalidate();
     		repaint();
     	}
+    	else if ("gotoViewFlightsPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new ViewFlightsPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	else if ("gotoBuyTicketsPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new BuyTicketsPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
     }
 
     
