@@ -65,8 +65,8 @@ public class DatabaseConnecter
 		PreparedStatement stmt = con.prepareStatement("INSERT INTO passenger VALUES(?, ?, ?, ?, 0)");
 		int id = (int) (Math.random() * Integer.MAX_VALUE);
 		stmt.setInt(1, id);
-		stmt.setString(2, name);
-		stmt.setString(3, username);
+		stmt.setString(2, username);
+		stmt.setString(3, name);
 		stmt.setString(4, password);
 		
 		try 
@@ -75,7 +75,7 @@ public class DatabaseConnecter
 		}
 		catch(SQLException e)
 		{
-			//e.printStackTrace();
+			e.printStackTrace();
 
 			return -1;
 		}

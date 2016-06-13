@@ -75,7 +75,7 @@ public class DatabaseConnecter
 		}
 		catch(SQLException e)
 		{
-			//e.printStackTrace();
+			e.printStackTrace();
 
 			return -1;
 		}

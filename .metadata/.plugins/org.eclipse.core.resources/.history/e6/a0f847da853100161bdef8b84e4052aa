@@ -21,7 +21,6 @@ public class CreateAccountPage extends Page implements ActionListener
 
 	JPasswordField p1;
 	JTextField t0, t1;
-	JLabel w1;
 	
 	public CreateAccountPage(GUIMain mainComponent, DatabaseConnecter dc)
 	{
@@ -59,32 +58,26 @@ public class CreateAccountPage extends Page implements ActionListener
         t0.setBounds(250, 250, 240, 30);
         createAccountPage.add(t0);
         
-        w1 = new JLabel();
-        w1.setForeground(Color.RED);
-        w1.setFont(new Font(w1.getFont().getFontName(), 0, 10));
-        w1.setBounds(250, 270, 200, 30);
-        createAccountPage.add(w1);
-        
         JLabel l1 = new JLabel();
         l1.setText("Name:");
         l1.setFont(new Font(l1.getFont().getFontName(), 0, 20));
-        l1.setBounds(250, 290, 200, 60);
+        l1.setBounds(250, 300, 200, 60);
         createAccountPage.add(l1);
         
         t1 = new JTextField(10);
-        t1.setBounds(250, 340, 240, 30);
+        t1.setBounds(250, 350, 240, 30);
         createAccountPage.add(t1);
         
         JLabel l2 = new JLabel();
         l2.setText("Password:");
         l2.setFont(new Font(l2.getFont().getFontName(), 0, 20));
-        l2.setBounds(250, 380, 200, 60);
+        l2.setBounds(250, 400, 200, 60);
         createAccountPage.add(l2);
         
         p1 = new JPasswordField(10);
         p1.setActionCommand("createAccount");
         p1.addActionListener(this);
-        p1.setBounds(250, 430, 240, 30);
+        p1.setBounds(250, 450, 240, 30);
         createAccountPage.add(p1);
         
         JButton b2 = new JButton("Create");
@@ -92,7 +85,7 @@ public class CreateAccountPage extends Page implements ActionListener
         b2.setHorizontalTextPosition(AbstractButton.CENTER);
         b2.setActionCommand("createAccount");
         b2.addActionListener(this);
-        b2.setBounds(250, 470, 120, 40);
+        b2.setBounds(250, 480, 120, 40);
         createAccountPage.add(b2);
         
         mainComponent.add(createAccountPage);
@@ -113,18 +106,8 @@ public class CreateAccountPage extends Page implements ActionListener
 			try
 			{
 				int id = dc.createAccount(t0.getText(), t1.getText(), new String(p1.getPassword()));
-				
-				if (id == -1)
-				{
-					t0.setText("");
-					w1.setText("Username in use.");
-				}
-				else
-				{
-					JOptionPane.showMessageDialog(GUIMain.frame, "Account created.");
-					mainComponent.actionPerformed(new ActionEvent(this, 0, "gotoCustomerLoginPage"));
-				}
-				
+				JOptionPane.showMessageDialog(GUIMain.frame, "Account created. Your id is: " + id + " . Remember it well.");
+				mainComponent.actionPerformed(new ActionEvent(this, 0, "gotoCustomerLoginPage"));
 
 			} catch (SQLException e)
 			{

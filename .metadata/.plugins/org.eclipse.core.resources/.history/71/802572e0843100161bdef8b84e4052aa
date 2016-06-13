@@ -37,10 +37,10 @@ public class DatabaseConnecter
 	 * 1 means incorrect password
 	 * 2 means everything ok
 	 */
-	public int passengerExists(String username, String password) throws SQLException
+	public int passengerExists(int username, String password) throws SQLException
 	{
 		PreparedStatement stmt = con.prepareStatement("SELECT * FROM passenger WHERE username = ?");
-		stmt.setString(1, username);
+		stmt.setInt(1, username);
 		ResultSet rs = stmt.executeQuery();
 		
 		if (rs.next())
@@ -65,8 +65,8 @@ public class DatabaseConnecter
 		PreparedStatement stmt = con.prepareStatement("INSERT INTO passenger VALUES(?, ?, ?, ?, 0)");
 		int id = (int) (Math.random() * Integer.MAX_VALUE);
 		stmt.setInt(1, id);
-		stmt.setString(2, name);
-		stmt.setString(3, username);
+		stmt.setString(2, username);
+		stmt.setString(3, name);
 		stmt.setString(4, password);
 		
 		try 
@@ -75,7 +75,7 @@ public class DatabaseConnecter
 		}
 		catch(SQLException e)
 		{
-			//e.printStackTrace();
+			e.printStackTrace();
 
 			return -1;
 		}

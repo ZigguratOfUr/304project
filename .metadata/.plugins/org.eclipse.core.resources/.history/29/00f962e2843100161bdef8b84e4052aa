@@ -135,7 +135,16 @@ public class CustomerLoginPage extends Page implements ActionListener
 			
 			try
 			{
-				result = dc.passengerExists(t1.getText(), new String(p1.getPassword()));
+				try
+				{
+					Integer.parseInt(t1.getText());
+
+					result = dc.passengerExists(Integer.parseInt(t1.getText()), new String(p1.getPassword()));
+				}
+				catch (NumberFormatException e)
+				{
+					result = 0;
+				}
 			} catch (SQLException e)
 			{
 				e.printStackTrace();

@@ -62,7 +62,7 @@ public class CreateAccountPage extends Page implements ActionListener
         w1 = new JLabel();
         w1.setForeground(Color.RED);
         w1.setFont(new Font(w1.getFont().getFontName(), 0, 10));
-        w1.setBounds(250, 270, 200, 30);
+        w1.setBounds(250, 270, 160, 30);
         createAccountPage.add(w1);
         
         JLabel l1 = new JLabel();
