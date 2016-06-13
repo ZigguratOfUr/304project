@@ -2,6 +2,7 @@ package main;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,6 +30,34 @@ public class DatabaseConnecter
 	{
 		Statement stmt = con.createStatement();
 		return stmt.executeQuery("SELECT * FROM personnel");
+	}
+	
+	/*
+	 * 0 means no such user
+	 * 1 means incorrect password
+	 * 2 means everything ok
+	 */
+	public int passengerExists(int userId, String password) throws SQLException
+	{
+		PreparedStatement stmt = con.prepareStatement("SELECT * FROM passenger WHERE id = ?");
+		stmt.setInt(1, userId);
+		ResultSet rs = stmt.executeQuery();
+		
+		if (rs.next())
+		{
+			if (password.equals(rs.getString(3)))
+			{
+				return 2;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+		else
+		{
+			return 0;
+		}
 	}
 	
 	public Object[][] getPersonnelTable()
