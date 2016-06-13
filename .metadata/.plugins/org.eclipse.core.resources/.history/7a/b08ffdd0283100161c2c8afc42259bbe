@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -96,8 +95,6 @@ public class CreateAccountPage extends Page implements ActionListener
 			try
 			{
 				int id = dc.createAccount(t1.getText(), new String(p1.getPassword()));
-				JOptionPane.showMessageDialog(GUIMain.frame, "Account created. Your id is: " + id + " . Remember it well.");
-				mainComponent.actionPerformed(new ActionEvent(this, 0, "gotoCustomerLoginPage"));
 
 			} catch (SQLException e)
 			{

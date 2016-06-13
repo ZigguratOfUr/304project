@@ -53,13 +53,6 @@ public class CustomerLoginPage extends Page implements ActionListener
 
         customerLoginPage.add(b2);
         
-        JLabel m1 = new JLabel();
-        m1.setText("LOGIN");
-        m1.setFont(new Font(m1.getFont().getFontName(), 0, 32));
-        m1.setForeground(Color.BLUE);
-        m1.setBounds(300, 125, 200, 60);
-        customerLoginPage.add(m1);
-        
         JLabel l1 = new JLabel();
         l1.setText("Enter login id:");
         l1.setFont(new Font(l1.getFont().getFontName(), 0, 20));
@@ -112,8 +105,8 @@ public class CustomerLoginPage extends Page implements ActionListener
         JButton b4 = new JButton("Create Account");
         b4.setVerticalTextPosition(AbstractButton.BOTTOM);
         b4.setHorizontalTextPosition(AbstractButton.CENTER);
-        b4.setActionCommand("gotoCreateAccountPage");
-        b4.addActionListener(mainComponent);
+        b4.setActionCommand("createAccountPage");
+        b4.addActionListener(this);
         b4.setBounds(600, 650, 160, 40);
         customerLoginPage.add(b4);
         

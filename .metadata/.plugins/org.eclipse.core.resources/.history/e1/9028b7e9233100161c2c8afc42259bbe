@@ -53,13 +53,6 @@ public class CustomerLoginPage extends Page implements ActionListener
 
         customerLoginPage.add(b2);
         
-        JLabel m1 = new JLabel();
-        m1.setText("LOGIN");
-        m1.setFont(new Font(m1.getFont().getFontName(), 0, 32));
-        m1.setForeground(Color.BLUE);
-        m1.setBounds(300, 125, 200, 60);
-        customerLoginPage.add(m1);
-        
         JLabel l1 = new JLabel();
         l1.setText("Enter login id:");
         l1.setFont(new Font(l1.getFont().getFontName(), 0, 20));

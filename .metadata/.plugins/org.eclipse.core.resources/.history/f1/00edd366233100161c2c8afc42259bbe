@@ -60,14 +60,6 @@ public class GUIMain extends JPanel implements ActionListener
     		System.out.println("test2");
     		//TODO: Go to the successor page
     	}
-    	else if ("gotoCreateAccountPage".equals(evt.getActionCommand()))
-    	{
-    		currentPage.cleanPage();
-    		currentPage = new CreateAccountPage(this, dc);
-    		currentPage.createPage();
-    		revalidate();
-    		repaint();
-    	}
     }
 
     

@@ -97,7 +97,6 @@ public class CreateAccountPage extends Page implements ActionListener
 			{
 				int id = dc.createAccount(t1.getText(), new String(p1.getPassword()));
 				JOptionPane.showMessageDialog(GUIMain.frame, "Account created. Your id is: " + id + " . Remember it well.");
-				mainComponent.actionPerformed(new ActionEvent(this, 0, "gotoCustomerLoginPage"));
 
 			} catch (SQLException e)
 			{

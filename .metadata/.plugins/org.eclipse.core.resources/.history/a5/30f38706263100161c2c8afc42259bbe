@@ -5,12 +5,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -89,21 +87,10 @@ public class CreateAccountPage extends Page implements ActionListener
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent evt)
+	public void actionPerformed(ActionEvent e)
 	{
-		if ("createAccount".equals(evt.getActionCommand()))
-    	{
-			try
-			{
-				int id = dc.createAccount(t1.getText(), new String(p1.getPassword()));
-				JOptionPane.showMessageDialog(GUIMain.frame, "Account created. Your id is: " + id + " . Remember it well.");
-				mainComponent.actionPerformed(new ActionEvent(this, 0, "gotoCustomerLoginPage"));
-
-			} catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
-    	}
+		// TODO Auto-generated method stub
+		
 	}
 
 }

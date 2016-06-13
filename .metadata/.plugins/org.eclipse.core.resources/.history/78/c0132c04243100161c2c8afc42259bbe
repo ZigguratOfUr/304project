@@ -48,13 +48,6 @@ public class AdminLoginPage extends Page implements ActionListener
         JPanel centre = new JPanel();
         centre.setLayout(null);
 		
-        JLabel m1 = new JLabel();
-        m1.setText("LOGIN");
-        m1.setFont(new Font(m1.getFont().getFontName(), 0, 32));
-        m1.setForeground(Color.BLUE);
-        m1.setBounds(300, 75, 200, 60);
-        centre.add(m1);
-        
         JLabel l1 = new JLabel();
         l1.setText("Enter Password:");
         l1.setFont(new Font(l1.getFont().getFontName(), 0, 20));

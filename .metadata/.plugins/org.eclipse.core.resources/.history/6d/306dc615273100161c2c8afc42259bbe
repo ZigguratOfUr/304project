@@ -60,28 +60,6 @@ public class DatabaseConnecter
 		}
 	}
 	
-	public int createAccount(String name, String password) throws SQLException
-	{
-		PreparedStatement stmt = con.prepareStatement("INSERT INTO passenger VALUES(?, ?, ?, 0)");
-		int id = (int) (Math.random() * Integer.MAX_VALUE);
-		stmt.setInt(1, id);
-		stmt.setString(2, name);
-		stmt.setString(3, password);
-		
-		try 
-		{
-			stmt.executeQuery();
-		}
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-
-			return -1;
-		}
-
-		return id;
-	}
-	
 	public Object[][] getPersonnelTable()
 	{
 		ResultSet rs;
