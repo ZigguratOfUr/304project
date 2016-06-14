@@ -50,6 +50,14 @@ public class GUIMain extends JPanel implements ActionListener
     		revalidate();
     		repaint();
     	}
+    	else if ("gotoViewFlightsPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new ViewFlightsPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
     	else if ("gotoAdminPage".equals(evt.getActionCommand()))
     	{
     		currentPage.cleanPage();
@@ -58,7 +66,15 @@ public class GUIMain extends JPanel implements ActionListener
     		revalidate();
     		repaint();
     	}
-    	
+    	else if ("gotoBuyTicketsPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new BuyTicketsPage(this, dc);
+
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
     	else if ("gotoPersonnelPage".equals(evt.getActionCommand()))
     	{
     		currentPage.cleanPage();
@@ -67,6 +83,13 @@ public class GUIMain extends JPanel implements ActionListener
     		revalidate();
     		repaint();
     	}
+//    	else if("Destination".equals(evt.getActionCommand())){
+//		    System.out.println(evt.getActionCommand());
+//		}
+//    	else if("Flight Id".equals(evt.getActionCommand())){
+//		       System.out.println(evt.getActionCommand());
+//		}
+
     	else if ("gotoPlanesPage".equals(evt.getActionCommand()))
     	{
     		currentPage.cleanPage();
@@ -105,6 +128,10 @@ public class GUIMain extends JPanel implements ActionListener
     	{
     		currentPage.cleanPage();
     		currentPage = new FiringPage(this, dc);
+
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
     	}
     	else if ("loginToCustomer".equals(evt.getActionCommand()))
     	{
