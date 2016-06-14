@@ -50,6 +50,66 @@ public class GUIMain extends JPanel implements ActionListener
     		revalidate();
     		repaint();
     	}
+    	else if ("gotoAdminPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new AdminPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	
+    	else if ("gotoPersonnelPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new PersonnelPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	else if ("gotoPlanesPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new PlanesPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	/*
+    	else if ("gotoUpdatePersonnelPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new UpdatePersonnelPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	else if ("gotoAssignCrewPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new AssignCrewPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	*/
+    	else if ("gotoHiringPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new HiringPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	else if ("gotoFiringPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new FiringPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	
     }
 
     
