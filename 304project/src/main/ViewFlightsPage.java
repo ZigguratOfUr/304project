@@ -49,7 +49,7 @@ public class ViewFlightsPage extends Page implements ActionListener
         b1 = new JButton("Back");
         b1.setVerticalTextPosition(AbstractButton.BOTTOM);
         b1.setHorizontalTextPosition(AbstractButton.CENTER);
-        b1.setActionCommand("gotoExamplePage");
+        b1.setActionCommand("gotoCustomerMainPage");
         b1.addActionListener(mainComponent);
         
         mainComponent.add(b1);
