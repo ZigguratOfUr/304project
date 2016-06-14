@@ -99,27 +99,29 @@ public class FlightsPage extends Page implements ActionListener
         b1.setHorizontalTextPosition(AbstractButton.CENTER);
         b1.setActionCommand("CancelFlight");
         b1.addActionListener(this);
-        b1.setBounds(150, 50, 160, 40);
+        b1.setBounds(420, 50, 160, 40);
         b1.setForeground(Color.RED);
 
         flightsPage.add(b1);
         
-        b2 = new JButton("View all flights");
-        b2.setVerticalTextPosition(AbstractButton.TOP);
-        b2.setHorizontalTextPosition(AbstractButton.LEFT);
-        b2.setActionCommand("createallFlightsTable");
-        b2.addActionListener(this);
-        b2.setBounds(330, 50, 160, 40);
-        b2.setForeground(Color.BLUE);
-
-        flightsPage.add(b2);
+//        b2 = new JButton("View all flights");
+//        b2.setVerticalTextPosition(AbstractButton.TOP);
+//        b2.setHorizontalTextPosition(AbstractButton.LEFT);
+//        b2.setActionCommand("createallFlightsTable");
+//        b2.addActionListener(this);
+//        b2.setBounds(330, 50, 160, 40);
+//        b2.setForeground(Color.BLUE);
+//
+//        flightsPage.add(b2);
+        this.actionPerformed( new ActionEvent(this, 0, "generateFlightTable"));
+        
         
         b3 = new JButton("Schedule Flights");
         b3.setVerticalTextPosition(AbstractButton.TOP);
         b3.setHorizontalTextPosition(AbstractButton.LEFT);
         b3.setActionCommand("ScheduleFlights");
         b3.addActionListener(this);
-        b3.setBounds(510, 50, 160, 40);
+        b3.setBounds(240, 50, 160, 40);
         b3.setForeground(new Color(79, 121, 66));
 
         flightsPage.add(b3);
@@ -142,7 +144,7 @@ public class FlightsPage extends Page implements ActionListener
 	public void actionPerformed(ActionEvent evt)
 	{
 		
-		if ("createallFlightsTable".equals(evt.getActionCommand()))
+		if ("generateFlightTable".equals(evt.getActionCommand()))
 		{
 			Object[][] data = dc.getallFlightsTable();
     		
@@ -160,7 +162,6 @@ public class FlightsPage extends Page implements ActionListener
     		//Add the scroll pane to this panel.
             
     		flightsPage.add(scrollPane);
-
 		}
 		
 		else if ("CancelFlight".equals(evt.getActionCommand()))
