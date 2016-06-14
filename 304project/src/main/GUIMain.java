@@ -58,10 +58,27 @@ public class GUIMain extends JPanel implements ActionListener
     		revalidate();
     		repaint();
     	}
+    	else if ("gotoAdminPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new AdminPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
     	else if ("gotoBuyTicketsPage".equals(evt.getActionCommand()))
     	{
     		currentPage.cleanPage();
     		currentPage = new BuyTicketsPage(this, dc);
+
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	else if ("gotoPersonnelPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new PersonnelPage(this, dc);
     		currentPage.createPage();
     		revalidate();
     		repaint();
@@ -73,6 +90,63 @@ public class GUIMain extends JPanel implements ActionListener
 //		       System.out.println(evt.getActionCommand());
 //		}
 
+    	else if ("gotoPlanesPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new PlanesPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	/*
+    	else if ("gotoUpdatePersonnelPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new UpdatePersonnelPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	else if ("gotoAssignCrewPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new AssignCrewPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	*/
+    	else if ("gotoHiringPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new HiringPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	else if ("gotoFiringPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new FiringPage(this, dc);
+
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	else if ("loginToCustomer".equals(evt.getActionCommand()))
+    	{
+    		System.out.println("test2");
+    		//TODO: Go to the successor page
+    	}
+    	else if ("gotoCreateAccountPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new CreateAccountPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	
     }
 
     
@@ -80,7 +154,7 @@ public class GUIMain extends JPanel implements ActionListener
 	{
 		dc = dbc;
 		//Create and set up the window.
-        frame = new JFrame("GUIMain");
+        frame = new JFrame("Airport Group Application");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         //Add contents to the window.
@@ -88,6 +162,7 @@ public class GUIMain extends JPanel implements ActionListener
  
         //Display the window.
         frame.setSize(800,800);
+        frame.setResizable(false);
         frame.setVisible(true);
 		
 	}
