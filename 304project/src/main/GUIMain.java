@@ -105,6 +105,16 @@ public class GUIMain extends JPanel implements ActionListener
     	{
     		currentPage.cleanPage();
     		currentPage = new FiringPage(this, dc);
+    	}
+    	else if ("loginToCustomer".equals(evt.getActionCommand()))
+    	{
+    		System.out.println("test2");
+    		//TODO: Go to the successor page
+    	}
+    	else if ("gotoCreateAccountPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new CreateAccountPage(this, dc);
     		currentPage.createPage();
     		revalidate();
     		repaint();
@@ -117,7 +127,7 @@ public class GUIMain extends JPanel implements ActionListener
 	{
 		dc = dbc;
 		//Create and set up the window.
-        frame = new JFrame("GUIMain");
+        frame = new JFrame("Airport Group Application");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         //Add contents to the window.
@@ -125,6 +135,7 @@ public class GUIMain extends JPanel implements ActionListener
  
         //Display the window.
         frame.setSize(800,800);
+        frame.setResizable(false);
         frame.setVisible(true);
 		
 	}

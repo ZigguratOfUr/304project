@@ -35,6 +35,57 @@ public class DatabaseConnecter
 		return stmt.executeQuery("SELECT * FROM personnel");
 	}
 	
+	/*
+	 * 0 means no such user
+	 * 1 means incorrect password
+	 * 2 means everything ok
+	 */
+	public int passengerExists(String username, String password) throws SQLException
+	{
+		PreparedStatement stmt = con.prepareStatement("SELECT * FROM passenger WHERE username = ?");
+		stmt.setString(1, username);
+		ResultSet rs = stmt.executeQuery();
+		
+		if (rs.next())
+		{
+			if (password.equals(rs.getString(4)))
+			{
+				return 2;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	
+	public int createAccount(String username, String name, String password) throws SQLException
+	{
+		PreparedStatement stmt = con.prepareStatement("INSERT INTO passenger VALUES(?, ?, ?, ?, 0)");
+		int id = (int) (Math.random() * Integer.MAX_VALUE);
+		stmt.setInt(1, id);
+		stmt.setString(2, name);
+		stmt.setString(3, username);
+		stmt.setString(4, password);
+		
+		try 
+		{
+			stmt.executeQuery();
+		}
+		catch(SQLException e)
+		{
+			//e.printStackTrace();
+
+			return -1;
+		}
+
+		return id;
+	}
+	
 	public Object[][] getPersonnelTable()
 	{
 		ResultSet rs;

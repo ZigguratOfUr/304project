@@ -1,0 +1,80 @@
+package main;
+
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.AbstractButton;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+
+public class AdminLoginPage extends Page implements ActionListener
+{
+	JPanel adminLoginPage;
+	JPasswordField p1;
+	private static final String PASSWORD = "Lagomorpha";
+	
+	public AdminLoginPage(GUIMain mainComponent, DatabaseConnecter dc)
+	{
+		super(mainComponent, dc);
+		adminLoginPage = new JPanel();
+		adminLoginPage.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 350));
+	}
+
+	@Override
+	public void createPage()
+	{
+		
+    	JButton b1 = new JButton("Back");
+        b1.setVerticalTextPosition(AbstractButton.BOTTOM);
+        b1.setHorizontalTextPosition(AbstractButton.CENTER);
+        b1.setActionCommand("gotoStartPage");
+        b1.addActionListener(mainComponent);
+
+        adminLoginPage.add(b1);
+        
+        JLabel l1 = new JLabel();
+        l1.setText("Password:");
+        l1.setPreferredSize(new Dimension(120,60));
+        
+        adminLoginPage.add(l1);
+        
+        p1 = new JPasswordField(10);
+        p1.setActionCommand("login");
+        p1.addActionListener(mainComponent);
+        adminLoginPage.add(p1);
+        
+        JButton b2 = new JButton("Login");
+        b2.setVerticalTextPosition(AbstractButton.BOTTOM);
+        b2.setHorizontalTextPosition(AbstractButton.CENTER);
+        b2.setActionCommand("tryLogin");
+        b2.addActionListener(this);
+
+        adminLoginPage.add(b2);
+        
+		mainComponent.add(adminLoginPage);
+	}
+
+	@Override
+	public void cleanPage()
+	{
+		mainComponent.remove(adminLoginPage);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent evt)
+	{
+		if ("tryLogin".equals(evt.getActionCommand()))
+    	{
+			if(PASSWORD.equals(new String(p1.getPassword())))
+			{
+				p1.postActionEvent();
+				
+			}
+    	}
+	}
+
+}
