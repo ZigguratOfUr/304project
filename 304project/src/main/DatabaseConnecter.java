@@ -523,6 +523,14 @@ public class DatabaseConnecter
 	}
 	
 	public void hirePersonnel(GUIMain component, long id, String name, long phone, Date hireDate, long airline) throws SQLException{
+		PreparedStatement check = con.prepareStatement("select count(*) from personnel where id = ?");
+		check.setLong(1, id);
+		ResultSet rs = check.executeQuery();
+		rs.next();
+		int id_exists = rs.getInt(1);
+		System.out.println("id_exists is: " + id_exists);
+		if (id_exists == 0) {  // The input id does not exist in the DB, insert new id
+			
 		// order of columns in db: id, pname, phonenumber, hiredate, airlineid
 		PreparedStatement stmt = con.prepareStatement("insert into personnel values (?, ?, ?, ?, ?)");
 		stmt.setLong(1, id);
@@ -530,6 +538,13 @@ public class DatabaseConnecter
 		stmt.setLong(3, phone);
 		stmt.setDate(4, hireDate);
 		stmt.setLong(5, airline);
+		stmt.executeUpdate();
+		JOptionPane.showMessageDialog(component, "Personnel successfully created.",
+				"HIRE SUCCESSFUL", JOptionPane.PLAIN_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(component, "Personnel with id already exists. Please re-enter another id.",
+											"HIRE UNSUCCESSFUL", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 }

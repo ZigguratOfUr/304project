@@ -12,6 +12,7 @@ import java.util.Calendar;
 import javax.swing.AbstractButton;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -20,12 +21,13 @@ import javax.swing.SwingConstants;
 public class HiringPage extends Page implements ActionListener {
 
 	private JButton btn_back, btn_submit;
-	private JLabel JL_id, JL_name, JL_phone, JL_hireDate, JL_airline;
-	private JTextField JT_id, JT_name, JT_phone, JT_hireDate, JT_airline;
+	private JLabel JL_id, JL_name, JL_phone, JL_airline;
+	private JTextField JT_id, JT_name, JT_phone, JT_airline;
+	private JComboBox JDD_airline;
 	
 	public HiringPage(GUIMain mainComponent, DatabaseConnecter dc) {
 		super(mainComponent, dc);
-		mainComponent.setLayout(new GridLayout(6,2));
+		mainComponent.setLayout(new GridLayout(5,2));
 	}
 
 	@Override
@@ -35,30 +37,32 @@ public class HiringPage extends Page implements ActionListener {
 			String id = JT_id.getText();
 			String name = JT_name.getText();
 			String phone = JT_phone.getText();
-			//String hireDate = JT_hireDate.getText();
-			String airline = JT_airline.getText();
+			long airline = Long.parseLong(JDD_airline.getSelectedItem().toString());
 			Calendar currentTime = Calendar.getInstance();
 			Date hireDate = new Date((currentTime.getTime()).getTime());
 			
+			/* Debugging prints //////////////////////////
+			System.out.println("The converted date is: " + hireDate);
+			System.out.println("id is: " + id);
+			System.out.println("name is: " + name);
+			System.out.println("phone is: " + phone);
+			System.out.println("airline is: " + airline);
+			*/
 			
-			if("".equals(id) || "".equals(name) || "".equals(phone) || "".equals(airline)) {
+			if("".equals(id) || "".equals(name) || "".equals(phone)) {
 				JOptionPane.showMessageDialog(mainComponent, "Blank input(s) detected.", "FIELDS MISSING", JOptionPane.ERROR_MESSAGE);
 			} else { 
-			
-				int err = -1;  // Inputs 2,4,5 may throw NumberFormatException need to keep track of culprit
 				try { 
-					dc.hirePersonnel(mainComponent, Integer.parseInt(JT_id.getText()), JT_name.getText(),
-									Integer.parseInt(JT_phone.getText()), hireDate, Integer.parseInt(JT_airline.getText()));
+					dc.hirePersonnel(mainComponent, Long.parseLong(id), name,
+									Long.parseLong(phone), hireDate, airline);
 				} catch (NumberFormatException ext) {
-					switch(err) {
-					case(2) : JOptionPane.showMessageDialog(mainComponent, "Error: Id must be in integer format", "INVALID INPUT", JOptionPane.ERROR_MESSAGE);
-					break;
-					case(4) : JOptionPane.showMessageDialog(mainComponent, "Error: Phone must be in integer format", "INVALID INPUT", JOptionPane.ERROR_MESSAGE);
-					break;
-					case(6) : JOptionPane.showMessageDialog(mainComponent, "Error: Airling must be in integer format", "INVALID INPUT", JOptionPane.ERROR_MESSAGE);
-					}
+					String newLine = System.getProperty("line.separator");
+					JOptionPane.showMessageDialog(mainComponent, "Error: All inputs must obey the following formats:" + newLine + newLine +
+							"Id, Phone must be numbers;" + newLine + "Name must be alphabetical;", "INVALID INPUT", JOptionPane.ERROR_MESSAGE);
+					//ext.printStackTrace();
 				} catch (SQLException s) {
 					JOptionPane.showMessageDialog(mainComponent, "SQL error", "Encountered an SQL error while trying to delete", JOptionPane.ERROR_MESSAGE);
+					s.printStackTrace();
 				}
 			} 
 			
@@ -79,15 +83,16 @@ public class HiringPage extends Page implements ActionListener {
     	JL_id = new JLabel("Id: ");
     	JL_name = new JLabel("Full Name: ");
     	JL_phone = new JLabel("Phone#: ");
-    	JL_hireDate = new JLabel("Today's Date: ");
     	JL_airline = new JLabel("Airline Id: ");
     	
     	// Make Textfields
     	JT_id = new JTextField(20);
     	JT_name = new JTextField(20);
     	JT_phone = new JTextField(20);
-    	JT_hireDate = new JTextField(20);
-    	JT_airline = new JTextField(20);
+    	
+    	// Make Drop down Box
+		String [] airlineIDs = {"1", "2", "3", "4", "5"};
+		JDD_airline = new JComboBox<String>(airlineIDs);
     	
     	// Add page elements
       	mainComponent.add(btn_submit);
@@ -97,10 +102,8 @@ public class HiringPage extends Page implements ActionListener {
       	mainComponent.add(JT_name);
       	mainComponent.add(JL_phone);
       	mainComponent.add(JT_phone);
-      	mainComponent.add(JL_hireDate);
-      	mainComponent.add(JT_hireDate);
       	mainComponent.add(JL_airline);
-      	mainComponent.add(JT_airline);
+      	mainComponent.add(JDD_airline);
 
 	}
 
@@ -112,13 +115,11 @@ public class HiringPage extends Page implements ActionListener {
      	mainComponent.remove(JL_id);
       	mainComponent.remove(JL_name);
       	mainComponent.remove(JL_phone);
-      	mainComponent.remove(JL_hireDate);
       	mainComponent.remove(JL_airline);
       	mainComponent.remove(JT_id);
       	mainComponent.remove(JT_name);
       	mainComponent.remove(JT_phone);
-      	mainComponent.remove(JT_hireDate);
-      	mainComponent.remove(JT_airline);
+      	mainComponent.remove(JDD_airline);
       	mainComponent.setLayout(new FlowLayout());
 	}
 
