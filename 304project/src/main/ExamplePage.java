@@ -11,7 +11,7 @@ import javax.swing.JTable;
 
 public class ExamplePage extends Page implements ActionListener
 {
-	JButton b1, b2;
+	JButton b1, b2, b3;
 	JScrollPane scrollPane;
 	
 	public ExamplePage(GUIMain mainComponent, DatabaseConnecter dc)
@@ -44,6 +44,7 @@ public class ExamplePage extends Page implements ActionListener
 	{
 		mainComponent.remove(b1);
 		mainComponent.remove(b2);
+		mainComponent.remove(b3);
 		
 		if (scrollPane!= null)
 		{

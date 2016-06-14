@@ -1,6 +1,8 @@
 // View all flights scheduled is a list from list select flight 
 package main;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -25,6 +27,8 @@ import javax.swing.JTextField;
 
 public class FlightsPage extends Page implements ActionListener
 {
+	JPanel flightsPage;
+	
 	JButton  b1,b2,b3,b4, b5, ok_button;
 	JScrollPane scrollPane;
 	
@@ -79,49 +83,57 @@ public class FlightsPage extends Page implements ActionListener
 	public FlightsPage(GUIMain mainComponent, DatabaseConnecter dc)
 	{
 		super(mainComponent, dc);
-		
+		flightsPage = new JPanel();
+		flightsPage.setLayout(null);
+		flightsPage.setPreferredSize(new Dimension(800,800));
 		//mainComponent.setLayout(null);
 	}
 
 	@Override
 	public void createPage()
 	{
-
-        
-        b1 = new JButton("Cancel Flight");
+		
+		
+        b1 = new JButton("Cancel Flights");
         b1.setVerticalTextPosition(AbstractButton.BOTTOM);
         b1.setHorizontalTextPosition(AbstractButton.CENTER);
         b1.setActionCommand("CancelFlight");
         b1.addActionListener(this);
-        b1.setBounds(50, 50, 40, 30);;
+        b1.setBounds(150, 50, 160, 40);
+        b1.setForeground(Color.RED);
 
-        mainComponent.add(b1);
+        flightsPage.add(b1);
         
         b2 = new JButton("View all flights");
         b2.setVerticalTextPosition(AbstractButton.TOP);
         b2.setHorizontalTextPosition(AbstractButton.LEFT);
         b2.setActionCommand("createallFlightsTable");
         b2.addActionListener(this);
+        b2.setBounds(330, 50, 160, 40);
+        b2.setForeground(Color.BLUE);
 
-        mainComponent.add(b2);
+        flightsPage.add(b2);
         
-        b3 = new JButton("Schedule Flight");
+        b3 = new JButton("Schedule Flights");
         b3.setVerticalTextPosition(AbstractButton.TOP);
         b3.setHorizontalTextPosition(AbstractButton.LEFT);
         b3.setActionCommand("ScheduleFlights");
         b3.addActionListener(this);
+        b3.setBounds(510, 50, 160, 40);
+        b3.setForeground(new Color(79, 121, 66));
 
-        mainComponent.add(b3);
+        flightsPage.add(b3);
         
         b4 = new JButton("Back");
         b4.setVerticalTextPosition(AbstractButton.BOTTOM);
         b4.setHorizontalTextPosition(AbstractButton.CENTER);
         b4.setActionCommand("gotoAdminPage");
         b4.addActionListener(mainComponent);
+        b4.setBounds(20, 20, 80, 25);
 
-        mainComponent.add(b4);
+        flightsPage.add(b4);
         
-       
+        mainComponent.add(flightsPage);
 	}
 
 	
@@ -135,7 +147,7 @@ public class FlightsPage extends Page implements ActionListener
 			Object[][] data = dc.getallFlightsTable();
     		
     		JTable table = new JTable(data, DatabaseConnecter.FLIGHT_TABLE_COLUMN_NAMES);
-    		table.setPreferredScrollableViewportSize(new Dimension(500, 120));
+    		table.setPreferredScrollableViewportSize(new Dimension(700, 160));
     		table.setFillsViewportHeight(true);
     		
     		if (scrollPane!= null)
@@ -144,11 +156,10 @@ public class FlightsPage extends Page implements ActionListener
     		}
     		//Create the scroll pane and add the table to it.
     		scrollPane = new JScrollPane(table);
+    		scrollPane.setBounds(50, 100, 700, 400);
     		//Add the scroll pane to this panel.
             
-    		mainComponent.add(scrollPane);
-    		mainComponent.revalidate();
-    		mainComponent.repaint();
+    		flightsPage.add(scrollPane);
 
 		}
 		
@@ -369,52 +380,58 @@ public class FlightsPage extends Page implements ActionListener
 	
 	@Override
 	public void cleanPage()
-	{
-		mainComponent.remove(b1);
-		mainComponent.remove(b2);
-		mainComponent.remove(b3);
-		mainComponent.remove(b4);
-		
-		//Remove things from Delete
-		mainComponent.remove(deleteflight);
-		mainComponent.remove(deleteflighttext);
-		mainComponent.remove(ok_button);
-		
-		//Remove things from Schedule
-		mainComponent.remove(dep);
-		mainComponent.remove(dep_year);
-		mainComponent.remove(yearD);
-		mainComponent.remove(dep_month);
-		mainComponent.remove(monthD);
-		mainComponent.remove(dep_day);
-		mainComponent.remove(dayD);
-		mainComponent.remove(dep_hr);
-		mainComponent.remove(HourD);
-		mainComponent.remove(dep_min);
-		mainComponent.remove(MinuteD);
-		
-		mainComponent.remove(arr_min);
-		mainComponent.remove(MinuteA);
-		mainComponent.remove(arr);
-		mainComponent.remove(arr_year);
-		mainComponent.remove(yearA);
-		mainComponent.remove(arr_month);
-		mainComponent.remove(monthA);
-		mainComponent.remove(arr_day);
-		mainComponent.remove(dayA);
-		mainComponent.remove(arr_hr);
-		mainComponent.remove(HourA);
-		mainComponent.remove(originL);
-		mainComponent.remove(originF);
-		mainComponent.remove(destinationL);
-		mainComponent.remove(destinationF);
-		
-		mainComponent.remove(airline);
-		mainComponent.remove(airlineID);
-		mainComponent.remove(airline);
-		mainComponent.remove(planeID);
-		
-		mainComponent.remove(ok_schedule);
+    {
+        mainComponent.remove(b1);
+        mainComponent.remove(b2);
+        mainComponent.remove(b3);
+        mainComponent.remove(b4);
+        
+        //Remove things from Delete
+        mainComponent.remove(deleteflight);
+        mainComponent.remove(deleteflighttext);
+        mainComponent.remove(ok_button);
+        
+        //Remove things from Schedule
+        mainComponent.remove(flight);
+        mainComponent.remove(flightID);
+        
+        
+        mainComponent.remove(dep);
+        mainComponent.remove(dep_year);
+        mainComponent.remove(yearD);
+        mainComponent.remove(dep_month);
+        mainComponent.remove(monthD);
+        mainComponent.remove(dep_day);
+        mainComponent.remove(dayD);
+        mainComponent.remove(dep_hr);
+        mainComponent.remove(HourD);
+        mainComponent.remove(dep_min);
+        mainComponent.remove(MinuteD);
+        
+        mainComponent.remove(arr_min);
+        mainComponent.remove(MinuteA);
+        mainComponent.remove(arr);
+        mainComponent.remove(arr_year);
+        mainComponent.remove(yearA);
+        mainComponent.remove(arr_month);
+        mainComponent.remove(monthA);
+        mainComponent.remove(arr_day);
+        mainComponent.remove(dayA);
+        mainComponent.remove(arr_hr);
+        mainComponent.remove(HourA);
+        mainComponent.remove(arr_min);
+        mainComponent.remove(MinuteA);
+        mainComponent.remove(originL);
+        mainComponent.remove(originF);
+        mainComponent.remove(destinationL);
+        mainComponent.remove(destinationF);
+        
+        mainComponent.remove(airline);
+        mainComponent.remove(airlineID);
+        mainComponent.remove(airline);
+        mainComponent.remove(planeID);
+        
+        mainComponent.remove(ok_schedule);
 		if (scrollPane!= null)
 		{
 			mainComponent.remove(scrollPane);
