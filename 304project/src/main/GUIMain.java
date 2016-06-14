@@ -66,6 +66,13 @@ public class GUIMain extends JPanel implements ActionListener
     		revalidate();
     		repaint();
     	}
+//    	else if("Destination".equals(evt.getActionCommand())){
+//		    System.out.println(evt.getActionCommand());
+//		}
+//    	else if("Flight Id".equals(evt.getActionCommand())){
+//		       System.out.println(evt.getActionCommand());
+//		}
+
     }
 
     

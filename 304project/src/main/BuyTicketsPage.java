@@ -1,19 +1,31 @@
 package main;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 
 public class BuyTicketsPage extends Page implements ActionListener, ListSelectionListener {
@@ -25,7 +37,11 @@ public class BuyTicketsPage extends Page implements ActionListener, ListSelectio
 	JTable table = new JTable(data, DatabaseConnecter.VIEW_FLIGHT_TABLE_COLUMN_NAMES);
 	
 	int rowSelection;
-	Object selectedPurchase;
+//	Object selectedPurchase;
+	int sPurchase;
+	
+	
+	
 
 
 	public BuyTicketsPage(GUIMain mainComponent, DatabaseConnecter dc)
@@ -52,10 +68,7 @@ public class BuyTicketsPage extends Page implements ActionListener, ListSelectio
         b2.addActionListener(this);
         
         mainComponent.add(b2);
-        
-        
-        
-        
+               
 //        Object[][] data = dc.getScheduledFlightTable();
         
         // Create a new table instance
@@ -79,21 +92,33 @@ public class BuyTicketsPage extends Page implements ActionListener, ListSelectio
         mainComponent.revalidate();
         mainComponent.repaint();
 	}
+                
+
+	
+	
+	
 	
 	public void valueChanged( ListSelectionEvent event){
 		
 		if(event.getSource() == table.getSelectionModel() && event.getFirstIndex() >= 0){
 			TableModel model = (TableModel)table.getModel();
+//			int model = table.
+			
 			
 			 rowSelection = table.getSelectedRow();
 			 
 			 int rowCount = table.getRowCount();
 			 int columnCount = table.getColumnCount();
 			 
-			 selectedPurchase = model.getValueAt(rowSelection, 0);
+			 //the flight id is here
+//			 selectedPurchase = model.getValueAt(rowSelection, 0);
+			 
+			 
+			 
+			sPurchase = Integer.parseInt(model.getValueAt(rowSelection,0).toString());
 			
-//			System.out.println("Value selected = " + rowSelection );
-//			System.out.println(selectedPurchase);
+			System.out.println("Value selected = " + rowSelection );
+			System.out.println(sPurchase);
 		}
 	}
 
@@ -115,13 +140,80 @@ public class BuyTicketsPage extends Page implements ActionListener, ListSelectio
 		if("gotoMadePurchase".equals(evt.getActionCommand())){
 			if(table.getSelectedRow() > -1){
 			int result = JOptionPane.showConfirmDialog(null,
-										  "Are you sure you want to purchase flight:" + " " + selectedPurchase,
+										  "Are you sure you want to purchase flight:" + " " + sPurchase,
 										  "Confirmation",
 										  JOptionPane.YES_NO_OPTION,
 										  JOptionPane.QUESTION_MESSAGE);
 			if( result == JOptionPane.YES_OPTION ){
+				String [] options = { "economy", "business", "first", "super-first"};
+				String [] seats = {"window", "normal", "pilot's seat"};
+				
+				
+				
+				int choice = JOptionPane.showOptionDialog(null,
+														  "Choose your desired seating class",
+														  "Class Seating",
+														  JOptionPane.YES_NO_CANCEL_OPTION,
+														  JOptionPane.DEFAULT_OPTION,
+														  null,
+														  options,
+														  options[3]);
+				
+				//the resulting seating class choice
+				String option = options[choice];
+				
+				
+//				String seatType = seats[choice];
+				
+				int seatChoice = JOptionPane.showOptionDialog(null,
+															 "Choose your desired seat type",
+															 "Seat type",
+															 JOptionPane.YES_NO_CANCEL_OPTION,
+															 JOptionPane.DEFAULT_OPTION,
+															 null,
+															 seats,
+															 seats[2]);
+				// the resulting seat choice
+				String seat = seats[seatChoice];
+				
+				
+				String input = JOptionPane.showInputDialog(null,
+														   "Enter passenger ID:",
+														   "Passenger ID",
+														   JOptionPane.DEFAULT_OPTION);
+				// the temporary passenger input id
+				int numInput;
+				numInput = Integer.valueOf(input);
+				
+				System.out.println(numInput);
+				
+				//the ticket ID
+				int tID;
+				
+				try{
+				tID = dc.getTicketID();
+				}
+				catch(SQLException s){
+					System.out.println("Got an SQL error");
+					s.printStackTrace();
+				}
+				
+														  
+														  
+														  
+//				try {
+//					// put the flight ID into this
+//			dc.buyTicket(tID,option,seat,numInput,sPurchase);
+//				} catch(SQLException s) {
+//					System.out.println("Got an SQL error");
+//					s.printStackTrace();
+//					
+//				}
+//				System.out.println(option);
+//				System.out.println(seat);
+//				System.out.println(input);
 			JOptionPane.showMessageDialog(null,
-										   "The purchase of ticket for flight" + " " + ":" + " " + selectedPurchase + " has been successful",
+										   "The purchase of ticket for flight" + " " + ":" + " " + sPurchase + " has been successful",
 										   "Confirmation",
 										   JOptionPane.INFORMATION_MESSAGE);
 			}

@@ -2,6 +2,7 @@ package main;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -35,9 +36,21 @@ public class DatabaseConnecter
 		con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1522:ug",  "ora_z5r8", "a34072124"); //ssh r0e9@remote.ugrad.cs.ubc.ca -L 1522:dbhost.ugrad.cs.ubc.ca:1522
 
 	}
-	
+	// getViewFlights for flightID
 	public ResultSet getViewFlights() throws SQLException
 	{
+//		PreparedStatement stmt = con.prepareStatement("SELECT * FROM flight WHERE status <> 'Landed' AND status <> 'Lost' AND Flight Id = ?");
+//		String flightString = Integer.toString(flightId);
+//		stmt.setString(1, flightString );
+//		ResultSet rs = stmt.executeQuery();
+//		
+//		if(rs.next())
+//		{
+//			if(rs.)
+//		}
+		
+		
+		
 		Statement stmt = con.createStatement();
 		return stmt.executeQuery("SELECT * FROM flight WHERE status <> 'Landed' AND status <> 'Lost' ");
 	}
@@ -72,6 +85,7 @@ public class DatabaseConnecter
 	
 	public ResultSet getScheduledFlights() throws SQLException
 	{
+		
 		Statement stmt = con.createStatement();
 		return stmt.executeQuery("SELECT * FROM flight WHERE status = 'Scheduled'");
 	}
@@ -133,5 +147,31 @@ public class DatabaseConnecter
 
 		Object[][] table=new Object[data.size()][];
 		return data.toArray(table);
+	}
+	// check if passenger is already on the table?
+//	public void buyTicket(int id, String classP, String seat, int pID, int fID) throws SQLException {
+//		PreparedStatement stmt = con.prepareStatement("insert into Ticket value(?, ?, ?, ?, ?)");
+//		stmt.setInt(1, id);
+//		stmt.setString(2, classP);
+//		stmt.setString(3, seat);
+//		stmt.setInt(4, pID);
+//		stmt.setInt(5, fID);
+//		
+//		stmt.executeUpdate();
+//		
+//		
+//	}
+	
+	public int getTicketID() throws SQLException {
+		Statement stmt = con.createStatement();
+		int id = -1;
+	    stmt.executeQuery("SELECT max(id) FROM Ticket");
+	    ResultSet rs;
+	    
+	    rs = stmt.getResultSet();
+////	    id = (int) rs.getLong(1) + 1;
+	    id = rs.getInt(1) + 1;
+	    return id;
+		
 	}
 }

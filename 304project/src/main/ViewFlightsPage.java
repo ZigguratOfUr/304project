@@ -1,23 +1,30 @@
 package main;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.AbstractButton;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
-//import java.awt.BorderLayout;
-//import java.awt.Component;
-//import java.awt.event.MouseAdapter;
-//import java.awt.event.MouseEvent;
-//import javax.swing.JFrame;
-//import javax.swing.JOptionPane;
-//import javax.swing.UIManager;
-//import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
 
@@ -25,8 +32,8 @@ public class ViewFlightsPage extends Page implements ActionListener
 
 {
 	JButton b1, b2;
-//	JButton[] buttons = new JButton[10000];
 	JScrollPane scrollPane;
+	String actionCommand;
 	
 	public ViewFlightsPage(GUIMain mainComponent, DatabaseConnecter dc)
 	{
@@ -36,13 +43,7 @@ public class ViewFlightsPage extends Page implements ActionListener
 	@Override
 	public void createPage()
 	{
-//    	b1 = new JButton("Test table creation");
-//        b1.setVerticalTextPosition(AbstractButton.BOTTOM);
-//        b1.setHorizontalTextPosition(AbstractButton.CENTER);
-//        b1.setActionCommand("createPersonnelTable");
-//        b1.addActionListener(this);
-//
-//        mainComponent.add(b1);
+
 		
         
         b1 = new JButton("Back");
@@ -61,29 +62,11 @@ public class ViewFlightsPage extends Page implements ActionListener
 
         mainComponent.add(b2);
         
-//        b3 = new JButton("Test View Flights");
-//        b3.setVerticalTextPosition(AbstractButton.BOTTOM);
-//        b3.setHorizontalTextPosition(AbstractButton.CENTER);
-//        b3.setActionCommand("createViewFlightsTable");
-//        b3.addActionListener(this);
-//        
-//        mainComponent.add(b3);
         
         Object[][] data = dc.getViewFlightTable();
         
         JTable table = new JTable(data, DatabaseConnecter.VIEW_FLIGHT_TABLE_COLUMN_NAMES);
         
-        // creating button column
-//        TableColumn col = new TableColumn();
-//        col.setHeaderValue("");
-        
-//       TableCellRenderer buttonRenderer = new ButtonRenderer();
-//       table.getColumn("Buy").setCellRenderer(buttonRenderer);
-//       table.getColumn("Buy").setCellRenderer(buttonRenderer);
-//       table.addMouseListener(new MouseListener(table));
-        
-        
-//        table.addColumn(col);
         table.setPreferredScrollableViewportSize(new Dimension(700, 200));
         table.setFillsViewportHeight(true);
         
@@ -97,7 +80,153 @@ public class ViewFlightsPage extends Page implements ActionListener
         mainComponent.add(scrollPane);
         mainComponent.revalidate();
         mainComponent.repaint();
-//		}
+        
+        // search bar
+        
+        TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(table.getModel());
+
+        
+        JTextField searchFilter = new JTextField();     
+        table.setRowSorter(rowSorter);
+        
+        JPanel searchPanel = new JPanel(new BorderLayout());
+        searchPanel.setLayout(new GridLayout(1,2,1,1));
+        
+        
+        JRadioButton radio1 = new JRadioButton("Destination");
+        radio1.setActionCommand("Destination");
+        radio1.addActionListener(this);
+        radio1.setSelected(true);
+        
+        JRadioButton radio2 = new JRadioButton("Flight Id");
+        radio2.setActionCommand("Flight Id");
+        radio2.addActionListener(this);
+        
+        ButtonGroup group = new ButtonGroup();
+        
+        
+        group.add(radio1);
+        group.add(radio2);
+        
+        searchPanel.add(radio1);
+        searchPanel.add(radio2);
+        
+        
+        
+       searchPanel.add(new JLabel("Search by selected type:"),BorderLayout.WEST);
+       searchPanel.add(searchFilter,BorderLayout.CENTER);
+       
+       table.setLayout(new BorderLayout());
+       table.add(searchPanel, BorderLayout.SOUTH);
+       
+       
+       
+
+       //text filtering in search bar
+       searchFilter.getDocument().addDocumentListener(new DocumentListener(){
+
+		@Override
+		public void changedUpdate(DocumentEvent de) {
+			String currentText = searchFilter.getText();
+			
+			if(currentText.trim().length() == 0){
+				rowSorter.setRowFilter(null);
+			}
+			else{
+				TableModel model = (TableModel)table.getModel();
+				int rowSelection = table.getSelectedRow();
+				int rowCount = table.getRowCount();
+				int columnCount = table.getColumnCount();
+				
+				RowFilter rowFilterD = RowFilter.regexFilter(currentText,6);
+				RowFilter rowFilterF = RowFilter.regexFilter(currentText,0);
+					
+
+				if(actionCommand == "Destination"){
+					rowSorter.setRowFilter(rowFilterD.regexFilter("(?i)" + currentText));
+				}
+				
+				if(actionCommand == "Flight Id"){
+					rowSorter.setRowFilter(rowFilterF.regexFilter("(?i)" + currentText));
+				}
+
+				
+//				for(int i = 0; i < rowCount; i++){
+//					if(model.getValueAt(i, 0) == currentText) {
+//						rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + currentText));
+//					}
+//				}
+			}			
+		}
+		@Override
+		public void insertUpdate(DocumentEvent de) {
+			String currentText = searchFilter.getText();
+			
+			if(currentText.trim().length() == 0){
+				rowSorter.setRowFilter(null);
+			}
+			else{
+				
+				TableModel model = (TableModel)table.getModel();
+				int rowSelection = table.getSelectedRow();
+				int rowCount = table.getRowCount();
+				int columnCount = table.getColumnCount();
+				
+				RowFilter rowFilterD = RowFilter.regexFilter(currentText,6);
+				RowFilter rowFilterF = RowFilter.regexFilter(currentText,0);
+					
+
+				if(actionCommand == "Destination"){
+					rowSorter.setRowFilter(rowFilterD.regexFilter("(?i)" + currentText));
+				}
+				
+				if(actionCommand == "Flight Id"){
+					rowSorter.setRowFilter(rowFilterF.regexFilter("(?i)" + currentText));
+				}
+				
+//				for(int i = 0; i < rowCount; i++){
+//					if(model.getValueAt(i, 0) == currentText) {
+//						rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + currentText));
+//					}
+//				}
+//				rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + currentText));
+			}			
+		}
+		@Override
+		public void removeUpdate(DocumentEvent de) {
+			String currentText = searchFilter.getText();
+			
+			if(currentText.trim().length() == 0){
+				rowSorter.setRowFilter(null);
+			}
+			else{
+				
+				TableModel model = (TableModel)table.getModel();
+				int rowSelection = table.getSelectedRow();
+				int rowCount = table.getRowCount();
+				int columnCount = table.getColumnCount();
+				
+				RowFilter rowFilterD = RowFilter.regexFilter(currentText,6);
+				RowFilter rowFilterF = RowFilter.regexFilter(currentText,0);
+					
+
+				if(actionCommand == "Destination"){
+					rowSorter.setRowFilter(rowFilterD.regexFilter("(?i)" + currentText));
+				}
+				
+				if(actionCommand == "Flight Id"){
+					rowSorter.setRowFilter(rowFilterF.regexFilter("(?i)" + currentText));
+				}
+				
+//				for(int i = 0; i < rowCount; i++){
+//					if(model.getValueAt(i, 0) ==) {
+//						rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + currentText));
+//					}
+//				}
+//				rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + currentText));
+			}			
+		}    	   
+       });
 	}
 
 	@Override
@@ -105,7 +234,7 @@ public class ViewFlightsPage extends Page implements ActionListener
 	{
 		mainComponent.remove(b1);
 		mainComponent.remove(b2);
-//		mainComponent.remove(b3);
+
 		
 		if (scrollPane!= null)
 		{
@@ -113,9 +242,22 @@ public class ViewFlightsPage extends Page implements ActionListener
 		}
 	}
 
+
 	@Override
 	public void actionPerformed(ActionEvent evt)
 	{
+		if("Destination".equals(evt.getActionCommand())){
+			actionCommand = evt.getActionCommand();
+//		    System.out.println(actionCommand);
+		}
+    	else if("Flight Id".equals(evt.getActionCommand())){
+    		actionCommand = evt.getActionCommand();
+//		       System.out.println(actionCommand);
+		}
+		
+			
+		
+
 //		if("createViewFlightsTable".equals(evt.getActionCommand()))
 //		{
 //        Object[][] data = dc.getViewFlightTable();
@@ -175,3 +317,4 @@ public class ViewFlightsPage extends Page implements ActionListener
 //	}
 	
 }
+	
