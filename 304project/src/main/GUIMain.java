@@ -133,11 +133,6 @@ public class GUIMain extends JPanel implements ActionListener
     		revalidate();
     		repaint();
     	}
-    	else if ("loginToCustomer".equals(evt.getActionCommand()))
-    	{
-    		System.out.println("test2");
-    		//TODO: Go to the successor page
-    	}
     	else if ("gotoCreateAccountPage".equals(evt.getActionCommand()))
     	{
     		currentPage.cleanPage();

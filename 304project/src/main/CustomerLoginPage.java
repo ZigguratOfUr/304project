@@ -143,7 +143,7 @@ public class CustomerLoginPage extends Page implements ActionListener
 			
 			if(result == 2)
 			{
-				mainComponent.actionPerformed(new ActionEvent(this, 0, "loginToCustomer"));
+				mainComponent.actionPerformed(new ActionEvent(this, 0, "gotoViewFlightsPage"));
 			}
 			else
 			{
