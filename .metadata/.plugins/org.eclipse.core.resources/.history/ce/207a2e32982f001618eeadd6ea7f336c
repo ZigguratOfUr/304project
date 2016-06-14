@@ -1,0 +1,14 @@
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+
+public class AdminMain extends Page implements ActionListener
+{
+	JButton b1, b2;
+	JScrollPane scrollPane;
+	
+	public ExamplePage(GUIMain mainComponent, DatabaseConnecter dc)
+	{
+		super(mainComponent, dc);
+	}
