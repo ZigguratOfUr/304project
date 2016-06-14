@@ -43,14 +43,6 @@ public class AdminLoginPage extends Page implements ActionListener
 
         topLeft.add(b1);
         
-        JButton b2 = new JButton("Submit");
-        b2.setVerticalTextPosition(AbstractButton.BOTTOM);
-        b2.setHorizontalTextPosition(AbstractButton.CENTER);
-        b2.setActionCommand("gotoAdminMainPage");
-        b2.addActionListener(mainComponent);
-
-        topLeft.add(b2);
-        
         adminLoginPage.add(topLeft, BorderLayout.NORTH);
 
 

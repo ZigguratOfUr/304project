@@ -35,7 +35,7 @@ public class CustomerLoginPage extends Page implements ActionListener
 	@Override
 	public void createPage()
 	{
-		JButton b1 = new JButton("Back");
+		JButton b1 = new JButton("Logout");
         b1.setVerticalTextPosition(AbstractButton.BOTTOM);
         b1.setHorizontalTextPosition(AbstractButton.CENTER);
         b1.setActionCommand("gotoStartPage");
@@ -44,23 +44,14 @@ public class CustomerLoginPage extends Page implements ActionListener
 
         customerLoginPage.add(b1);
         
-        JButton b2 = new JButton("Go to example page");
-        b2.setVerticalTextPosition(AbstractButton.BOTTOM);
-        b2.setHorizontalTextPosition(AbstractButton.CENTER);
-        b2.setActionCommand("gotoExamplePage");
-        b2.addActionListener(mainComponent);
-        b2.setBounds(550, 20, 200, 25);
-
-        customerLoginPage.add(b2);
-        
-        JButton b3 = new JButton("Submit");
-        b3.setVerticalTextPosition(AbstractButton.BOTTOM);
-        b3.setHorizontalTextPosition(AbstractButton.CENTER);
-        b3.setActionCommand("gotoCustomerMainPage");
-        b3.addActionListener(mainComponent);
-        b3.setBounds(340, 20, 200, 25);
-
-        customerLoginPage.add(b3);
+//        JButton b2 = new JButton("Go to example page");
+//        b2.setVerticalTextPosition(AbstractButton.BOTTOM);
+//        b2.setHorizontalTextPosition(AbstractButton.CENTER);
+//        b2.setActionCommand("gotoExamplePage");
+//        b2.addActionListener(mainComponent);
+//        b2.setBounds(550, 20, 200, 25);
+//
+//        customerLoginPage.add(b2);
         
         JLabel m1 = new JLabel();
         m1.setText("LOGIN");
@@ -152,7 +143,7 @@ public class CustomerLoginPage extends Page implements ActionListener
 			
 			if(result == 2)
 			{
-				mainComponent.actionPerformed(new ActionEvent(this, 0, "gotoViewFlightsPage"));
+				mainComponent.actionPerformed(new ActionEvent(this, 0, "gotoCustomerMainPage"));
 			}
 			else
 			{

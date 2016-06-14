@@ -116,7 +116,7 @@ public class FlightsPage extends Page implements ActionListener
         b4 = new JButton("Back");
         b4.setVerticalTextPosition(AbstractButton.BOTTOM);
         b4.setHorizontalTextPosition(AbstractButton.CENTER);
-        b4.setActionCommand("gotoAdminMainPage");
+        b4.setActionCommand("gotoAdminPage");
         b4.addActionListener(mainComponent);
 
         mainComponent.add(b4);
