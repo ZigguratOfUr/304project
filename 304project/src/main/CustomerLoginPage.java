@@ -53,6 +53,15 @@ public class CustomerLoginPage extends Page implements ActionListener
 
         customerLoginPage.add(b2);
         
+        JButton b3 = new JButton("Submit");
+        b3.setVerticalTextPosition(AbstractButton.BOTTOM);
+        b3.setHorizontalTextPosition(AbstractButton.CENTER);
+        b3.setActionCommand("gotoCustomerMainPage");
+        b3.addActionListener(mainComponent);
+        b3.setBounds(340, 20, 200, 25);
+
+        customerLoginPage.add(b3);
+        
         JLabel m1 = new JLabel();
         m1.setText("LOGIN");
         m1.setFont(new Font(m1.getFont().getFontName(), 0, 32));
@@ -94,13 +103,13 @@ public class CustomerLoginPage extends Page implements ActionListener
         w2.setBounds(250, 370, 160, 30);
         customerLoginPage.add(w2);
         
-        JButton b3 = new JButton("Login");
-        b3.setVerticalTextPosition(AbstractButton.BOTTOM);
-        b3.setHorizontalTextPosition(AbstractButton.CENTER);
-        b3.setActionCommand("tryLogin");
-        b3.addActionListener(this);
-        b3.setBounds(250, 430, 120, 40);
-        customerLoginPage.add(b3);
+        JButton b4 = new JButton("Login");
+        b4.setVerticalTextPosition(AbstractButton.BOTTOM);
+        b4.setHorizontalTextPosition(AbstractButton.CENTER);
+        b4.setActionCommand("tryLogin");
+        b4.addActionListener(this);
+        b4.setBounds(250, 430, 120, 40);
+        customerLoginPage.add(b4);
 
         JLabel l3 = new JLabel();
         l3.setText("No account? Register here.");
@@ -109,13 +118,13 @@ public class CustomerLoginPage extends Page implements ActionListener
         l3.setBounds(600, 600, 200, 60);
         customerLoginPage.add(l3);
         
-        JButton b4 = new JButton("Create Account");
-        b4.setVerticalTextPosition(AbstractButton.BOTTOM);
-        b4.setHorizontalTextPosition(AbstractButton.CENTER);
-        b4.setActionCommand("gotoCreateAccountPage");
-        b4.addActionListener(mainComponent);
-        b4.setBounds(600, 650, 160, 40);
-        customerLoginPage.add(b4);
+        JButton b5 = new JButton("Create Account");
+        b5.setVerticalTextPosition(AbstractButton.BOTTOM);
+        b5.setHorizontalTextPosition(AbstractButton.CENTER);
+        b5.setActionCommand("gotoCreateAccountPage");
+        b5.addActionListener(mainComponent);
+        b5.setBounds(600, 650, 160, 40);
+        customerLoginPage.add(b5);
         
         mainComponent.add(customerLoginPage);
 	}

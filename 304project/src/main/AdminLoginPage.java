@@ -7,8 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
@@ -44,6 +42,15 @@ public class AdminLoginPage extends Page implements ActionListener
         b1.addActionListener(mainComponent);
 
         topLeft.add(b1);
+        
+        JButton b2 = new JButton("Submit");
+        b2.setVerticalTextPosition(AbstractButton.BOTTOM);
+        b2.setHorizontalTextPosition(AbstractButton.CENTER);
+        b2.setActionCommand("gotoAdminMainPage");
+        b2.addActionListener(mainComponent);
+
+        topLeft.add(b2);
+        
         adminLoginPage.add(topLeft, BorderLayout.NORTH);
 
 
@@ -77,14 +84,14 @@ public class AdminLoginPage extends Page implements ActionListener
         
         centre.add(l2);
         
-        JButton b2 = new JButton("Login");
-        b2.setVerticalTextPosition(AbstractButton.BOTTOM);
-        b2.setHorizontalTextPosition(AbstractButton.CENTER);
-        b2.setActionCommand("tryLogin");
-        b2.addActionListener(this);
-        b2.setBounds(250, 400, 120, 40);
+        JButton b3 = new JButton("Login");
+        b3.setVerticalTextPosition(AbstractButton.BOTTOM);
+        b3.setHorizontalTextPosition(AbstractButton.CENTER);
+        b3.setActionCommand("tryLogin");
+        b3.addActionListener(this);
+        b3.setBounds(250, 400, 120, 40);
 
-        centre.add(b2);
+        centre.add(b3);
 
         adminLoginPage.add(centre, BorderLayout.CENTER);
         

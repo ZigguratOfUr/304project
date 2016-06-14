@@ -65,9 +65,9 @@ public class ExamplePage extends Page implements ActionListener
 	{
 		if ("createPersonnelTable".equals(evt.getActionCommand()))
     	{
-    		Object[][] data = dc.getPersonnelTable();
+    		Object[][] data = dc.getAvailableFlightsTable();
     		
-    		JTable table = new JTable(data, DatabaseConnecter.PERSONNEL_TABLE_COLUMN_NAMES);
+    		JTable table = new JTable(data, DatabaseConnecter.FLIGHT_TABLE_COLUMN_NAMES);
     		table.setPreferredScrollableViewportSize(new Dimension(500, 120));
     		table.setFillsViewportHeight(true);
     		
