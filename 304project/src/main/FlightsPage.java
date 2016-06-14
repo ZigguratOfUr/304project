@@ -6,9 +6,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -27,14 +29,30 @@ import javax.swing.JTextField;
 
 public class FlightsPage extends Page implements ActionListener
 {
-	JPanel flightsPage;
+	// String variables for drop down menu
+	private final String [] months = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
+	private final String [] days = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10",
+					"11", "12", "13", "14", "15", "16" , "17" , "18", "19", "20",
+					"21", "22", "23", "24", "25", "26" , "27" , "28", "29", "30", "31"};
+	private final String [] years = {"2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"};
+	private final String [] hours = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10",
+			"11", "12", "13", "14", "15", "16" , "17" , "18", "19", "20",
+			"21", "22", "23", "00"};
+	private final String [] minutes = {"00","01", "02", "03", "04", "05", "06", "07", "08", "09", "10",
+			"11", "12", "13", "14", "15", "16" , "17" , "18", "19", "20",
+			"21", "22", "23", "24", "25", "26" , "27" , "28", "29", "30",
+			"31", "32", "33", "34", "35", "36" , "37" , "38", "39", "40",
+			"41", "42", "43", "44", "45", "46" , "47" , "48", "49", "50",
+			"51", "52", "53", "54", "55", "56" , "57" , "58", "59"};
 	
-	JButton  b1,b2,b3,b4, b5, ok_button;
+	JPanel flightsPage, deletePane, createPane;
+	
+	JButton ok_button;
 	JScrollPane scrollPane;
 	
 	// From CancelFlight
-	JLabel deleteflight;
-	JTextField deleteflighttext = new JTextField(20);
+	JLabel deleteflight, deleteFlightWarningText, createFlightWarningText;
+	JTextField deleteflighttext;
 	
 	//From ScheduleFlight
 	JTextField flightID;
@@ -87,6 +105,7 @@ public class FlightsPage extends Page implements ActionListener
 		flightsPage.setLayout(null);
 		flightsPage.setPreferredSize(new Dimension(800,800));
 		//mainComponent.setLayout(null);
+		deleteflighttext = new JTextField(20);
 	}
 
 	@Override
@@ -94,39 +113,37 @@ public class FlightsPage extends Page implements ActionListener
 	{
 		
 		
-        b1 = new JButton("Cancel Flights");
+        JButton b1 = new JButton("Cancel Flights");
         b1.setVerticalTextPosition(AbstractButton.BOTTOM);
         b1.setHorizontalTextPosition(AbstractButton.CENTER);
         b1.setActionCommand("CancelFlight");
         b1.addActionListener(this);
-        b1.setBounds(420, 50, 160, 40);
+        b1.setBounds(150, 50, 160, 40);
         b1.setForeground(Color.RED);
 
         flightsPage.add(b1);
         
-//        b2 = new JButton("View all flights");
-//        b2.setVerticalTextPosition(AbstractButton.TOP);
-//        b2.setHorizontalTextPosition(AbstractButton.LEFT);
-//        b2.setActionCommand("createallFlightsTable");
-//        b2.addActionListener(this);
-//        b2.setBounds(330, 50, 160, 40);
-//        b2.setForeground(Color.BLUE);
-//
-//        flightsPage.add(b2);
-        this.actionPerformed( new ActionEvent(this, 0, "generateFlightTable"));
+        JButton b2 = new JButton("View All Flights");
+        b2.setVerticalTextPosition(AbstractButton.TOP);
+        b2.setHorizontalTextPosition(AbstractButton.LEFT);
+        b2.setActionCommand("generateFlightTable");
+        b2.addActionListener(this);
+        b2.setBounds(330, 50, 160, 40);
+        b2.setForeground(Color.BLUE);
+
+        flightsPage.add(b2);
         
-        
-        b3 = new JButton("Schedule Flights");
+        JButton b3 = new JButton("Schedule Flights");
         b3.setVerticalTextPosition(AbstractButton.TOP);
         b3.setHorizontalTextPosition(AbstractButton.LEFT);
         b3.setActionCommand("ScheduleFlights");
         b3.addActionListener(this);
-        b3.setBounds(240, 50, 160, 40);
+        b3.setBounds(510, 50, 160, 40);
         b3.setForeground(new Color(79, 121, 66));
 
         flightsPage.add(b3);
         
-        b4 = new JButton("Back");
+        JButton b4 = new JButton("Back");
         b4.setVerticalTextPosition(AbstractButton.BOTTOM);
         b4.setHorizontalTextPosition(AbstractButton.CENTER);
         b4.setActionCommand("gotoAdminPage");
@@ -134,6 +151,8 @@ public class FlightsPage extends Page implements ActionListener
         b4.setBounds(20, 20, 80, 25);
 
         flightsPage.add(b4);
+
+        this.actionPerformed( new ActionEvent(this, 0, "generateFlightTable"));
         
         mainComponent.add(flightsPage);
 	}
@@ -143,9 +162,31 @@ public class FlightsPage extends Page implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent evt)
 	{
+		if (!("Delete".equals(evt.getActionCommand())))
+		{
+			if (deletePane!= null)
+			{
+				flightsPage.remove(deletePane);
+
+				flightsPage.revalidate();
+				flightsPage.repaint();
+			}
+		}
+		
+		if (!("ScheduleFlight".equals(evt.getActionCommand())))
+		{
+			if (createPane!= null)
+			{
+				flightsPage.remove(createPane);
+
+				flightsPage.revalidate();
+				flightsPage.repaint();
+			}
+		}
 		
 		if ("generateFlightTable".equals(evt.getActionCommand()))
 		{
+			
 			Object[][] data = dc.getallFlightsTable();
     		
     		JTable table = new JTable(data, DatabaseConnecter.FLIGHT_TABLE_COLUMN_NAMES);
@@ -154,7 +195,7 @@ public class FlightsPage extends Page implements ActionListener
     		
     		if (scrollPane!= null)
     		{
-    			mainComponent.remove(scrollPane);
+    			flightsPage.remove(scrollPane);
     		}
     		//Create the scroll pane and add the table to it.
     		scrollPane = new JScrollPane(table);
@@ -167,177 +208,201 @@ public class FlightsPage extends Page implements ActionListener
 		else if ("CancelFlight".equals(evt.getActionCommand()))
 		{
 			drawFlightTable();
-			JLabel deleteflight = new JLabel("Flight ID");
-			JButton ok_button = new JButton("OK");
-			ok_button.addActionListener(this);
-			mainComponent.add(deleteflight);
-			mainComponent.add(deleteflighttext);
-			mainComponent.add(ok_button);
+			
+			deletePane = new JPanel();
+			deletePane.setLayout(null);
+			deletePane.setPreferredSize(new Dimension(800,800));
+			deletePane.setBounds(0, 0, 800, 800);
+			
+			JLabel deleteflight = new JLabel("Flight ID:");
+			deleteflight.setBounds(250, 520, 100, 25);
+			JButton deleteButton = new JButton("Cancel Flight");
+			deleteButton.setBounds(490, 520, 160, 25);
+			deleteButton.setActionCommand("Delete");
+			deleteButton.addActionListener(this);
+			deletePane.add(deleteflight);
+			deletePane.add(deleteflighttext);
+			deleteflighttext.setBounds(320, 520, 160, 25);
+			deletePane.add(deleteButton);
+			
+			deleteFlightWarningText = new JLabel();
+			deleteFlightWarningText.setBounds(320, 550, 160, 20);
+			deleteFlightWarningText.setFont(new Font(deleteFlightWarningText.getFont().getFontName(), 0, 10));
+			deletePane.add(deleteFlightWarningText);
+			
+			flightsPage.add(deletePane);
+			flightsPage.revalidate();
+			flightsPage.repaint();
 		}
-		else if ("OK".equals(evt.getActionCommand())){
-			int flightID = Integer.parseInt(deleteflighttext.getText());
-			dc.deleteFlight(flightID);
-			drawFlightTable();
+		else if ("Delete".equals(evt.getActionCommand()))
+		{
+			try
+			{
+				int flightID = Integer.parseInt(deleteflighttext.getText());
+				int result = dc.deleteFlight(flightID);
+				deleteflighttext.setText("");
+				if (result == -1)
+				{
+					deleteFlightWarningText.setForeground(Color.RED);
+					deleteFlightWarningText.setText("SQL Exception");
+				}
+				else if (result == 0)
+				{
+					deleteFlightWarningText.setForeground(Color.RED);
+					deleteFlightWarningText.setText("No such flight");
+				}
+				else if (result == 1)
+				{
+					drawFlightTable();
+					deleteFlightWarningText.setForeground(Color.BLACK);
+					deleteFlightWarningText.setText("Flight cancelled");
+				}
+			}
+			catch (NumberFormatException e)
+			{
+				deleteflighttext.setText("");
+				deleteFlightWarningText.setForeground(Color.RED);
+				deleteFlightWarningText.setText("Invalid input.");
+			}
 		}
 		else if ("ScheduleFlights".equals(evt.getActionCommand()))
 		{
-			System.out.println("Check1");
 			drawFlightTable();
     		
-			JTextField flightID = new JTextField(50);
-			flightID.setText("");
+			createPane = new JPanel();
+			//createPane.setLayout(null);
+			createPane.setPreferredSize(new Dimension(800,800));
+			createPane.setBounds(0, 500, 800, 300);
+			
+			JPanel row1 = new JPanel();
+			flightID = new JTextField(50);
 			JLabel flight = new JLabel("Flight ID");
-			mainComponent.add(flight);
-			mainComponent.add(flightID);
+			row1.add(flight);
+			row1.add(flightID);
 			
-			// String variables for drop down menu
-			String [] months = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
-			String [] days = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10",
-							"11", "12", "13", "14", "15", "16" , "17" , "18", "19", "20",
-							"21", "22", "23", "24", "25", "26" , "27" , "28", "29", "30", "31"};
-			String [] years = {"2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"};
-			String [] hours = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10",
-					"11", "12", "13", "14", "15", "16" , "17" , "18", "19", "20",
-					"21", "22", "23", "00"};
-			String [] minutes = {"00","01", "02", "03", "04", "05", "06", "07", "08", "09", "10",
-					"11", "12", "13", "14", "15", "16" , "17" , "18", "19", "20",
-					"21", "22", "23", "24", "25", "26" , "27" , "28", "29", "30",
-					"31", "32", "33", "34", "35", "36" , "37" , "38", "39", "40",
-					"41", "42", "43", "44", "45", "46" , "47" , "48", "49", "50",
-					"51", "52", "53", "54", "55", "56" , "57" , "58", "59"};
-			
+			JPanel row2 = new JPanel();
 			//Drop downs for Scheduled Arrival;
-			JComboBox yearD = new JComboBox(years);
+			yearD = new JComboBox(years);
 			JLabel dep = new JLabel("Scheduled Departure: ");
 			JLabel dep_year = new JLabel("Year");
-			mainComponent.add(dep);
-			mainComponent.add(dep_year);
-			mainComponent.add(yearD);
+			row2.add(dep);
+			row2.add(dep_year);
+			row2.add(yearD);
 			
-			JComboBox monthD = new JComboBox(months);
+			monthD = new JComboBox(months);
 			JLabel dep_month = new JLabel("Month");
-			mainComponent.add(dep_month);
-			mainComponent.add(monthD);
+			row2.add(dep_month);
+			row2.add(monthD);
 			
-			JComboBox dayD = new JComboBox(days);
-			JLabel dep_day = new JLabel("Date");
-			mainComponent.add(dep_day);
-			mainComponent.add(dayD);
+			dayD = new JComboBox(days);
+			JLabel dep_day = new JLabel("Day");
+			row2.add(dep_day);
+			row2.add(dayD);
 			
-			JComboBox HourD = new JComboBox(hours);
+			HourD = new JComboBox(hours);
 			JLabel dep_hr = new JLabel("Hour");
-			mainComponent.add(dep_hr);
-			mainComponent.add(HourD);
+			row2.add(dep_hr);
+			row2.add(HourD);
 			
-			JComboBox MinuteD = new JComboBox(minutes);
-			JLabel dep_min = new JLabel("minute");
-			mainComponent.add(dep_min);
-			mainComponent.add(MinuteD);
+			MinuteD = new JComboBox(minutes);
+			JLabel dep_min = new JLabel("Minute");
+			row2.add(dep_min);
+			row2.add(MinuteD);
 			
-			JComboBox yearA = new JComboBox(years);
+			JPanel row3 = new JPanel();
+			
+			yearA = new JComboBox(years);
 			JLabel arr = new JLabel("Scheduled Arrival: ");
 			JLabel arr_year = new JLabel("Year");
-			mainComponent.add(arr);
-			mainComponent.add(arr_year);
-			mainComponent.add(yearA);
+			row3.add(arr);
+			row3.add(arr_year);
+			row3.add(yearA);
 			
-			JComboBox monthA = new JComboBox(months);
+			monthA = new JComboBox(months);
 			JLabel arr_month = new JLabel("Month");
-			mainComponent.add(arr_month);
-			mainComponent.add(monthA);
+			row3.add(arr_month);
+			row3.add(monthA);
 			
-			JComboBox dayA = new JComboBox(days);
-			JLabel arr_day = new JLabel("Date");
-			mainComponent.add(arr_day);
-			mainComponent.add(dayA);
+			dayA = new JComboBox(days);
+			JLabel arr_day = new JLabel("Day");
+			row3.add(arr_day);
+			row3.add(dayA);
 			
-			JComboBox HourA = new JComboBox(hours);
+			HourA = new JComboBox(hours);
 			JLabel arr_hr = new JLabel("Hour");
-			mainComponent.add(arr_hr);
-			mainComponent.add(HourA);
+			row3.add(arr_hr);
+			row3.add(HourA);
 			
-			JComboBox MinuteA = new JComboBox(minutes);
-			JLabel arr_min = new JLabel("minute");
-			mainComponent.add(arr_min);
-			mainComponent.add(MinuteA);
+			MinuteA = new JComboBox(minutes);
+			JLabel arr_min = new JLabel("Minute");
+			row3.add(arr_min);
+			row3.add(MinuteA);
 			
-			String scheduledDepartureTime = yearD.getSelectedItem().toString() + "/" + monthD.getSelectedItem().toString() + "/"+ dayD.getSelectedItem().toString()
-					+ " " + HourD.getSelectedItem().toString()+ ":" + MinuteD.getSelectedItem().toString()+ ":00";
+			createPane.add(row1);
+			createPane.add(row2);
+			createPane.add(row3);
 			
-			String scheduledArrivalTime = yearA.getSelectedItem().toString() + "/" + monthA.getSelectedItem().toString() + "/"+ dayA.getSelectedItem().toString()
-					+ " " + HourA.getSelectedItem().toString()+ ":" + MinuteA.getSelectedItem().toString()+ ":00";
-			System.out.println("Schedule Dep: " + scheduledDepartureTime);
-			
-			Date s_arrival = new Date(scheduledArrivalTime);
-			Date s_departure = new Date(scheduledDepartureTime);
-			
-			if(s_arrival.before(s_departure)){
-				final JPanel panel = new JPanel();
-				JOptionPane.showMessageDialog(panel, "Invalid Entry of Dates", "Error", JOptionPane.ERROR_MESSAGE);		
-			}
-			
-			JTextField originF = new JTextField(50);
+			JPanel row4 = new JPanel();
+
+			originF = new JTextField(50);
 			originF.setText("");
 			JLabel originL = new JLabel("From: ");
-			mainComponent.add(originL);
-			mainComponent.add(originF);
+			row4.add(originL);
+			row4.add(originF);
 			
-			JTextField destinationF = new JTextField(50);
+			JPanel row5 = new JPanel();
+
+			destinationF = new JTextField(50);
 			destinationF.setText("");
 			JLabel destinationL = new JLabel("To: ");
-			mainComponent.add(destinationL);
-			mainComponent.add(destinationF);
+			row5.add(destinationL);
+			row5.add(destinationF);
 			
-			String [] airlineIDs = {"1", "2", "3", "4", "5"};
-			JComboBox airlineID = new JComboBox(airlineIDs);
+
+			createPane.add(row4);
+			createPane.add(row5);
+			
+			JPanel row6 = new JPanel();
+
+			airlineID = new JComboBox(dc.getAirlineIds());
 			JLabel airline = new JLabel("Airline ID");
-			mainComponent.add(airline);
-			mainComponent.add(airlineID);
+			row6.add(airline);
+			row6.add(airlineID);
 			
-			String [] planeID_air1 = {"101", "102", "103"};
-			String [] planeID_air2 = {"201", "202", "203"};
-			String [] planeID_air3 = {"301", "302", "303"};
-			String [] planeID_air4 = {"401", "402", "403"};
-			String [] planeID_air5 = {"501", "502", "503"};
+
+			planeID = new JComboBox(dc.getPlaneIds());
+			JLabel planeModel = new JLabel("Plane Model");
+			row6.add(planeModel);
+			row6.add(planeID);
 			
-			if (airlineID.getSelectedItem().toString() == "1"){
-				JComboBox planeID = new JComboBox(planeID_air1);
-				JLabel planeModel = new JLabel("Plane Model");
-				mainComponent.add(planeModel);
-				mainComponent.add(planeID);
-			}
-			else if (airlineID.getSelectedItem().toString() == "2"){
-				JComboBox planeID = new JComboBox(planeID_air2);
-				JLabel planeModel = new JLabel("Plane Model");
-				mainComponent.add(planeModel);
-				mainComponent.add(planeID);
-			}
-			else if (airlineID.getSelectedItem().toString() == "3"){
-				JComboBox planeID = new JComboBox(planeID_air3);
-				JLabel planeModel = new JLabel("Plane Model");
-				mainComponent.add(planeModel);
-				mainComponent.add(planeID);
-			}
-			else if (airlineID.getSelectedItem().toString() == "4"){
-				JComboBox planeID = new JComboBox(planeID_air4);
-				JLabel planeModel = new JLabel("Plane Model");
-				mainComponent.add(planeModel);
-				mainComponent.add(planeID);
-			}
-			else if (airlineID.getSelectedItem().toString() == "5"){
-				JComboBox planeID = new JComboBox(planeID_air5);
-				JLabel planeModel = new JLabel("Plane Model");
-				mainComponent.add(planeModel);
-				mainComponent.add(planeID);
-			}
-			
-			JButton ok_schedule = new JButton("ScheduleOK");
+			JButton ok_schedule = new JButton("Schedule Flight");
+			ok_schedule.setActionCommand("ScheduleFlight");
 			ok_schedule.addActionListener(this);
-			mainComponent.add(ok_schedule);
+			row6.add(ok_schedule);
 			
+			createPane.add(row6);
+			
+			flightsPage.add(createPane);
+			flightsPage.revalidate();
+			flightsPage.repaint();
 		}
-		
-		else if ("ScheduleOK".equals(evt.getActionCommand())){
+		else if ("ScheduleFlight".equals(evt.getActionCommand()))
+		{
+			if(createFlightWarningText !=null)
+			{
+				createPane.remove(createFlightWarningText);
+			}
+			if(!pageIsValid())
+			{
+				createFlightWarningText = new JLabel("Invalid request.");
+				createFlightWarningText.setFont(new Font(createFlightWarningText.getFont().getFontName(), 0, 10));
+				createFlightWarningText.setForeground(Color.RED);
+				createPane.add(createFlightWarningText);
+				createPane.revalidate();
+				createPane.repaint();
+				
+				return;
+			}
 			
 			int flightId = Integer.parseInt(flightID.getText());
 			String departureTime = null;
@@ -347,18 +412,16 @@ public class FlightsPage extends Page implements ActionListener
 			int airlineId = Integer.parseInt(airlineID.getSelectedItem().toString());	
 			String origin = originF.getText();
 			String destination = destinationF.getText();
+			String scheduledDepartureTime = yearD.getSelectedItem().toString() + "-" + monthD.getSelectedItem().toString() + "-"+ dayD.getSelectedItem().toString()
+					+ " " + HourD.getSelectedItem().toString()+ ":" + MinuteD.getSelectedItem().toString()+ ":00.0000";
 			
+			String scheduledArrivalTime = yearA.getSelectedItem().toString() + "-" + monthA.getSelectedItem().toString() + "-"+ dayA.getSelectedItem().toString()
+					+ " " + HourA.getSelectedItem().toString()+ ":" + MinuteA.getSelectedItem().toString()+ ":00.0000";
+
 			dc.ScheduleFlight(flightId , departureTime , arrivalTime, scheduledDepartureTime , scheduledArrivalTime, origin , destination , status , planeId , airlineId);
-			System.out.println("Flight: ");
 			drawFlightTable();
 		}
-			
-
-		}
-		
-	
-	
-
+	}
 	
 	private void drawFlightTable (){
 		Object[][] data = dc.getAvailableFlightsTable();
@@ -368,75 +431,56 @@ public class FlightsPage extends Page implements ActionListener
 		
 		if (scrollPane!= null)
 		{
-			mainComponent.remove(scrollPane);
+			flightsPage.remove(scrollPane);
 		}
 		//Create the scroll pane and add the table to it.
 		scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(50, 100, 700, 400);
 		//Add the scroll pane to this panel.
         
-		mainComponent.add(scrollPane);
-		mainComponent.revalidate();
-		mainComponent.repaint();
+		flightsPage.add(scrollPane);
+	}
+	
+	private boolean pageIsValid()
+	{
+		try
+		{
+			Integer.parseInt(flightID.getText());
+		}
+		catch(NumberFormatException e)
+		{
+			return false;
+		}
+		
+
+		String scheduledDepartureTime = yearD.getSelectedItem().toString() + "-" + monthD.getSelectedItem().toString() + "-"+ dayD.getSelectedItem().toString()
+				+ " " + HourD.getSelectedItem().toString()+ ":" + MinuteD.getSelectedItem().toString()+ ":00.0000";
+		
+		String scheduledArrivalTime = yearA.getSelectedItem().toString() + "-" + monthA.getSelectedItem().toString() + "-"+ dayA.getSelectedItem().toString()
+				+ " " + HourA.getSelectedItem().toString()+ ":" + MinuteA.getSelectedItem().toString()+ ":00.0000";
+		
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss.SSSS");
+		try {
+			Date departureDate = formatter.parse(scheduledDepartureTime);
+			Date arrivalDate = formatter.parse(scheduledArrivalTime);
+			
+			if (arrivalDate.after(departureDate))
+			{
+				return true;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		return false;
 	}
 	
 	@Override
 	public void cleanPage()
     {
-        mainComponent.remove(b1);
-        mainComponent.remove(b2);
-        mainComponent.remove(b3);
-        mainComponent.remove(b4);
-        
-        //Remove things from Delete
-        mainComponent.remove(deleteflight);
-        mainComponent.remove(deleteflighttext);
-        mainComponent.remove(ok_button);
-        
-        //Remove things from Schedule
-        mainComponent.remove(flight);
-        mainComponent.remove(flightID);
-        
-        
-        mainComponent.remove(dep);
-        mainComponent.remove(dep_year);
-        mainComponent.remove(yearD);
-        mainComponent.remove(dep_month);
-        mainComponent.remove(monthD);
-        mainComponent.remove(dep_day);
-        mainComponent.remove(dayD);
-        mainComponent.remove(dep_hr);
-        mainComponent.remove(HourD);
-        mainComponent.remove(dep_min);
-        mainComponent.remove(MinuteD);
-        
-        mainComponent.remove(arr_min);
-        mainComponent.remove(MinuteA);
-        mainComponent.remove(arr);
-        mainComponent.remove(arr_year);
-        mainComponent.remove(yearA);
-        mainComponent.remove(arr_month);
-        mainComponent.remove(monthA);
-        mainComponent.remove(arr_day);
-        mainComponent.remove(dayA);
-        mainComponent.remove(arr_hr);
-        mainComponent.remove(HourA);
-        mainComponent.remove(arr_min);
-        mainComponent.remove(MinuteA);
-        mainComponent.remove(originL);
-        mainComponent.remove(originF);
-        mainComponent.remove(destinationL);
-        mainComponent.remove(destinationF);
-        
-        mainComponent.remove(airline);
-        mainComponent.remove(airlineID);
-        mainComponent.remove(airline);
-        mainComponent.remove(planeID);
-        
-        mainComponent.remove(ok_schedule);
-		if (scrollPane!= null)
-		{
-			mainComponent.remove(scrollPane);
-		}
+		mainComponent.remove(flightsPage);
 	}
 
 }

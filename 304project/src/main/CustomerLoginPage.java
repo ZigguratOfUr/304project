@@ -35,7 +35,7 @@ public class CustomerLoginPage extends Page implements ActionListener
 	@Override
 	public void createPage()
 	{
-		JButton b1 = new JButton("Logout");
+		JButton b1 = new JButton("Back");
         b1.setVerticalTextPosition(AbstractButton.BOTTOM);
         b1.setHorizontalTextPosition(AbstractButton.CENTER);
         b1.setActionCommand("gotoStartPage");

@@ -163,6 +163,62 @@ public class DatabaseConnecter
 		return stmt.executeQuery("SELECT * FROM personnel");
 	}
 	
+	public ResultSet getAirlines() throws SQLException
+	{
+		Statement stmt = con.createStatement();
+		return stmt.executeQuery("SELECT id FROM airline");
+	}
+	
+	public Integer[] getAirlineIds()
+	{
+		ResultSet rs;
+		List<Integer> data = new LinkedList<Integer>();
+		
+		try
+		{
+			rs = getAirlines();
+			
+			while(rs.next())
+			{
+				data.add(rs.getInt(1));
+			}
+			return data.toArray(new Integer[data.size()]);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public ResultSet getPlanes() throws SQLException
+	{
+		Statement stmt = con.createStatement();
+		return stmt.executeQuery("SELECT id FROM plane");
+	}
+	
+	public Integer[] getPlaneIds()
+	{
+		ResultSet rs;
+		List<Integer> data = new LinkedList<Integer>();
+		
+		try
+		{
+			rs = getPlanes();
+			
+			while(rs.next())
+			{
+				data.add(rs.getInt(1));
+			}
+			return data.toArray(new Integer[data.size()]);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	/*
 	 * 0 means no such user
 	 * 1 means incorrect password
@@ -445,7 +501,7 @@ public class DatabaseConnecter
 	 PreparedStatement stmt;
 	 System.out.println("add flight1");
 	 try {
-		stmt= con.prepareStatement("INSERT INTO Flight(flightId, departureTime, arrivalTime, scheduledDepartureTime, scheduledArrivalTime, origin, destination, status, planeId, airlineId) VALUES (?,?,?,?,?,?,?,?,?,?)");
+		stmt= con.prepareStatement("INSERT INTO Flight(id, departureTime, arrivalTime, scheduledDeparture, scheduledArrival, origin, destination, status, planeId, airlineId) VALUES (?,?,?,?,?,?,?,?,?,?)");
 		stmt.setInt(1,flightId);
 		stmt.setString(2,departureTime);
 		stmt.setString(3,arrivalTime);
@@ -466,20 +522,22 @@ public class DatabaseConnecter
 	}
  }
 
- public void deleteFlight (int flightID){
+ 	public int deleteFlight (int flightID)
+ 	{
 	
 		PreparedStatement stmt;
-		try {
+		try
+		{
 
-			System.out.println("The input flight id is: 1");
 			stmt = con.prepareStatement("DELETE FROM Flight WHERE id = ?");
 			stmt.setInt(1, flightID );
-			stmt.executeUpdate();
-		} catch (SQLException e) {
+			return stmt.executeUpdate();	//0 if flight not found. 1 if deleted
+		} catch (SQLException e)
+		{
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return -1;
 		}
- }
+ 	}
 	
 
 	// check if passenger is already on the table?
