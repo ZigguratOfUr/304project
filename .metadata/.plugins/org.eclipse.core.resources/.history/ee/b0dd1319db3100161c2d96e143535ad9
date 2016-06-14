@@ -18,11 +18,15 @@ import javax.swing.JPasswordField;
 
 public class AdminLoginPage extends Page implements ActionListener
 {
+<<<<<<< HEAD
+	JButton b1, b2;
+=======
 	JPanel adminLoginPage;
 	JPasswordField p1;
 	JLabel l2;
 	private static final String PASSWORD = "Lagomorpha";
 	
+>>>>>>> master
 	public AdminLoginPage(GUIMain mainComponent, DatabaseConnecter dc)
 	{
 		super(mainComponent, dc);
@@ -34,6 +38,10 @@ public class AdminLoginPage extends Page implements ActionListener
 	@Override
 	public void createPage()
 	{
+<<<<<<< HEAD
+    	b1 = createButton(b1, "Back", "gotoStartPage");
+    	b2 = createButton(b2, "Admin Page", "gotoAdminPage");
+=======
 		JPanel topLeft = new JPanel();
 		topLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
 		
@@ -89,12 +97,18 @@ public class AdminLoginPage extends Page implements ActionListener
         adminLoginPage.add(centre, BorderLayout.CENTER);
         
 		mainComponent.add(adminLoginPage);
+>>>>>>> master
 	}
 
 	@Override
 	public void cleanPage()
 	{
+<<<<<<< HEAD
+		mainComponent.remove(b1);
+		mainComponent.remove(b2);;
+=======
 		mainComponent.remove(adminLoginPage);
+>>>>>>> master
 	}
 
 	@Override
@@ -104,7 +118,7 @@ public class AdminLoginPage extends Page implements ActionListener
     	{
 			if(PASSWORD.equals(new String(p1.getPassword())))
 			{
-				mainComponent.actionPerformed(new ActionEvent(this, 0, "gotoAdminPage"));
+				mainComponent.actionPerformed(new ActionEvent(this, 0, "loginToAdmin"));
 				
 			}
 			else

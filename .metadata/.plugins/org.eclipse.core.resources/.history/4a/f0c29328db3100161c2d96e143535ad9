@@ -50,6 +50,7 @@ public class GUIMain extends JPanel implements ActionListener
     		revalidate();
     		repaint();
     	}
+<<<<<<< HEAD
     	else if ("gotoAdminPage".equals(evt.getActionCommand()))
     	{
     		currentPage.cleanPage();
@@ -105,6 +106,11 @@ public class GUIMain extends JPanel implements ActionListener
     	{
     		currentPage.cleanPage();
     		currentPage = new FiringPage(this, dc);
+=======
+    	else if ("loginToAdmin".equals(evt.getActionCommand()))
+    	{
+    		System.out.println("test1");
+    		//TODO: Go to the successor page
     	}
     	else if ("loginToCustomer".equals(evt.getActionCommand()))
     	{
@@ -115,11 +121,15 @@ public class GUIMain extends JPanel implements ActionListener
     	{
     		currentPage.cleanPage();
     		currentPage = new CreateAccountPage(this, dc);
+>>>>>>> master
     		currentPage.createPage();
     		revalidate();
     		repaint();
     	}
+<<<<<<< HEAD
     	
+=======
+>>>>>>> master
     }
 
     
