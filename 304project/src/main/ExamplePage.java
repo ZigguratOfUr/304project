@@ -11,7 +11,7 @@ import javax.swing.JTable;
 
 public class ExamplePage extends Page implements ActionListener
 {
-	JButton b1, b2;
+	JButton b1, b2, b3;
 	JScrollPane scrollPane;
 	
 	public ExamplePage(GUIMain mainComponent, DatabaseConnecter dc)
@@ -37,6 +37,14 @@ public class ExamplePage extends Page implements ActionListener
         b2.addActionListener(mainComponent);
 
         mainComponent.add(b2);
+        
+        b3 = new JButton("View Flights");
+        b3.setVerticalTextPosition(AbstractButton.BOTTOM);
+        b3.setHorizontalTextPosition(AbstractButton.CENTER);
+        b3.setActionCommand("gotoViewFlightsPage");
+        b3.addActionListener(mainComponent);
+
+        mainComponent.add(b3);
 	}
 
 	@Override
@@ -44,6 +52,7 @@ public class ExamplePage extends Page implements ActionListener
 	{
 		mainComponent.remove(b1);
 		mainComponent.remove(b2);
+		mainComponent.remove(b3);
 		
 		if (scrollPane!= null)
 		{
@@ -74,6 +83,8 @@ public class ExamplePage extends Page implements ActionListener
     		mainComponent.revalidate();
     		mainComponent.repaint();
     	}
+		
+		
 		
 	}
 
