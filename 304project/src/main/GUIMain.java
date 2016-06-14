@@ -34,6 +34,40 @@ public class GUIMain extends JPanel implements ActionListener
     		revalidate();
     		repaint();
     	}
+    	else if ("gotoAdminMainPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new AdminMainPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	/*
+    	else if ("gotoPersonnelPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new PersonnelPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	else if ("gotoFlightslPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new FlightsPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	else if ("gotoPlanesPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new PlanesPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	*/
     	else if ("gotoCustomerLoginPage".equals(evt.getActionCommand()))
     	{
     		currentPage.cleanPage();
@@ -50,6 +84,32 @@ public class GUIMain extends JPanel implements ActionListener
     		revalidate();
     		repaint();
     	}
+    	else if ("gotoCustomerMainPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new CustomerMainPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	
+    	else if ("gotoFlightsPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new FlightsPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
+    	/*
+    	else if ("gotoBuyTicketsPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new BuyTicketsPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}*/
     }
 
     

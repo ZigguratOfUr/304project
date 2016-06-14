@@ -8,7 +8,7 @@ import javax.swing.JButton;
 
 public class AdminLoginPage extends Page implements ActionListener
 {
-	JButton b1;
+	JButton b1, b2;
 	
 	public AdminLoginPage(GUIMain mainComponent, DatabaseConnecter dc)
 	{
@@ -25,12 +25,21 @@ public class AdminLoginPage extends Page implements ActionListener
         b1.addActionListener(mainComponent);
 
         mainComponent.add(b1);
+        
+        b2 = new JButton("Submit");
+        b2.setVerticalTextPosition(AbstractButton.BOTTOM);
+        b2.setHorizontalTextPosition(AbstractButton.CENTER);
+        b2.setActionCommand("gotoAdminMainPage");
+        b2.addActionListener(mainComponent);
+
+        mainComponent.add(b2);
 	}
 
 	@Override
 	public void cleanPage()
 	{
 		mainComponent.remove(b1);
+		mainComponent.remove(b2);
 	}
 
 	@Override
