@@ -7,13 +7,18 @@ import java.awt.event.ActionListener;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 public class StatPage extends Page implements ActionListener
 {
-	JButton b1, b2, b3, b4;
+	private final String [] OP =  {"MIN", "MAX", "AVG"};
+	
+	JPanel statPane, airmilePane, planePane, personnelPane;
+	
 	JScrollPane scrollPane;
 	JLabel personnel;
 	
@@ -29,44 +34,50 @@ public class StatPage extends Page implements ActionListener
 	public StatPage(GUIMain mainComponent, DatabaseConnecter dc)
 	{
 		super(mainComponent, dc);
+		statPane = new JPanel();
+		statPane.setLayout(null);
+		statPane.setPreferredSize(new Dimension(800,800));
 	}
 
 	@Override
 	public void createPage()
 	{
-    	b1 = new JButton("Personnel");
+    	JButton b1 = new JButton("Personnel");
         b1.setVerticalTextPosition(AbstractButton.BOTTOM);
         b1.setHorizontalTextPosition(AbstractButton.CENTER);
         b1.setActionCommand("createTables");
         b1.addActionListener(this);
-
-        mainComponent.add(b1);
+        b1.setBounds(175, 50, 130, 20);
+        statPane.add(b1);
         
-        b2 = new JButton("AirMiles");
+        JButton b2 = new JButton("AirMiles");
         b2.setVerticalTextPosition(AbstractButton.BOTTOM);
         b2.setHorizontalTextPosition(AbstractButton.CENTER);
         b2.setActionCommand("airMileStats");
         b2.addActionListener(this);
+        b2.setBounds(325, 50, 130,20);
+
+        statPane.add(b2);
         
-        mainComponent.add(b2);
-        
-        b3 = new JButton("Planes");
+        JButton b3 = new JButton("Planes");
         b3.setVerticalTextPosition(AbstractButton.BOTTOM);
         b3.setHorizontalTextPosition(AbstractButton.CENTER);
         b3.setActionCommand("planeStats");
         b3.addActionListener(this);
+        b3.setBounds(475, 50, 130,20);
+
+        statPane.add(b3);
         
-        mainComponent.add(b3);
-        
-        b4 = new JButton("Back");
+        JButton b4 = new JButton("Back");
         b4.setVerticalTextPosition(AbstractButton.BOTTOM);
         b4.setHorizontalTextPosition(AbstractButton.CENTER);
         b4.setActionCommand("gotoAdminPage");
         b4.addActionListener(mainComponent);
+        b4.setBounds(20, 20, 80, 25);
 
-        mainComponent.add(b4);
+        statPane.add(b4);
         
-        
+        mainComponent.add(statPane);
         
         
 	}
@@ -74,36 +85,43 @@ public class StatPage extends Page implements ActionListener
 	@Override
 	public void cleanPage()
 	{
-		mainComponent.remove(b1);
-		mainComponent.remove(b2);
-		mainComponent.remove(b3);
-		mainComponent.remove(b4);
-		mainComponent.remove(personnel);
-		mainComponent.remove(fa);
-		mainComponent.remove(pilot);
-		mainComponent.remove(air);
-		
-		
-		
-		if (scrollPane!= null)
+		if(airmilePane!= null)
 		{
-			mainComponent.remove(scrollPane);
+			statPane.remove(airmilePane);
 		}
-		if (scrollPane2!= null)
+		if(planePane!= null)
 		{
-			mainComponent.remove(scrollPane2);
+			statPane.remove(planePane);
 		}
-		if (scrollPane3!= null)
+		if(personnelPane!= null)
 		{
-			mainComponent.remove(scrollPane3);
+			statPane.remove(personnelPane);
 		}
+		mainComponent.remove(statPane);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent evt)
 	{
+		if(airmilePane!= null)
+		{
+			statPane.remove(airmilePane);
+		}
+		if(planePane!= null)
+		{
+			statPane.remove(planePane);
+		}
+		if(personnelPane!= null)
+		{
+			statPane.remove(personnelPane);
+		}
 		if ("createTables".equals(evt.getActionCommand()))
     	{
+			personnelPane = new JPanel();
+			personnelPane.setLayout(null);
+			personnelPane.setPreferredSize(new Dimension(800,800));
+			personnelPane.setBounds(0, 80, 800, 720);
+
 			// Create Personnel Table
     		Object[][] data = dc.getPersonnelTotalTable();
     		
@@ -111,20 +129,15 @@ public class StatPage extends Page implements ActionListener
     		table.setPreferredScrollableViewportSize(new Dimension(750, 120));
     		table.setFillsViewportHeight(true);
     		
-    		if (scrollPane!= null)
-    		{
-    			mainComponent.remove(scrollPane);
-    		}
-    		
-    		JLabel personnel = new JLabel("             Total Personnel");
+    		JLabel personnel = new JLabel("Total Personnel");
+    		personnel.setBounds(340, 20, 120, 40);
     		//Create the scroll pane and add the table to it.
     		scrollPane = new JScrollPane(table);
+    		scrollPane.setBounds(25, 60, 750, 120);
     		//Add the scroll pane to this panel.
             
-    		mainComponent.add(personnel);
-    		mainComponent.add(scrollPane, BorderLayout.NORTH);
-    		mainComponent.revalidate();
-    		mainComponent.repaint();
+    		personnelPane.add(personnel);
+    		personnelPane.add(scrollPane, BorderLayout.NORTH);
     		
     		// Create Flight Attendant Table
     		Object[][] data2 = dc.getFATotalTable();
@@ -133,20 +146,17 @@ public class StatPage extends Page implements ActionListener
     		table2.setPreferredScrollableViewportSize(new Dimension(750, 120));
     		table2.setFillsViewportHeight(true);
     		
-    		if (scrollPane2!= null)
-    		{
-    			mainComponent.remove(scrollPane2);
-    		}
-    		
-    		JLabel fa = new JLabel("       Total Flight Attendants");
+    		JLabel fa = new JLabel("Total Flight Attendants");
+    		fa.setBounds(320, 200, 200, 40);
+
     		//Create the scroll pane and add the table to it.
     		scrollPane2 = new JScrollPane(table2);
+    		scrollPane2.setBounds(25, 240, 750, 120);
+
     		//Add the scroll pane to this panel.
             
-    		mainComponent.add(fa);
-    		mainComponent.add(scrollPane2, BorderLayout.CENTER);
-    		mainComponent.revalidate();
-    		mainComponent.repaint();
+    		personnelPane.add(fa);
+    		personnelPane.add(scrollPane2, BorderLayout.CENTER);
     		
     		
     		// Create Pilot Table
@@ -156,24 +166,30 @@ public class StatPage extends Page implements ActionListener
     		table3.setPreferredScrollableViewportSize(new Dimension(750, 120));
     		table3.setFillsViewportHeight(true);
     		
-    		if (scrollPane3!= null)
-    		{
-    			mainComponent.remove(scrollPane3);
-    		}
-    		
-    		JLabel pilot = new JLabel("       Total Pilots");
+    		JLabel pilot = new JLabel("Total Pilots");
+    		pilot.setBounds(350, 380, 120, 40);
+
     		//Create the scroll pane and add the table to it.
     		scrollPane3 = new JScrollPane(table3);
     		//Add the scroll pane to this panel.
-            
-    		mainComponent.add(pilot);
-    		mainComponent.add(scrollPane3, BorderLayout.SOUTH);
+    		scrollPane3.setBounds(25, 420, 750, 120);
+
+    		personnelPane.add(pilot);
+    		personnelPane.add(scrollPane3, BorderLayout.SOUTH);
+    		statPane.add(personnelPane);
     		mainComponent.revalidate();
     		mainComponent.repaint();
     	}
 		
 		else if ("airMileStats".equals(evt.getActionCommand()))
     	{
+			airmilePane = new JPanel();
+			airmilePane.setLayout(null);
+			airmilePane.setPreferredSize(new Dimension(800,800));
+			airmilePane.setBounds(0, 80, 800, 720);
+			
+			JComboBox ops = new JComboBox(OP);
+			
 			// Create Personnel Table
     		Object[][] data = dc.getairMileTable();
     		
@@ -186,19 +202,31 @@ public class StatPage extends Page implements ActionListener
     			mainComponent.remove(scrollPane);
     		}
     		
-    		JLabel air = new JLabel("Airmiles");
+    		JLabel air = new JLabel("Air Miles");
+    		air.setBounds(350, 60, 120, 40);
+
     		//Create the scroll pane and add the table to it.
     		scrollPane = new JScrollPane(table);
+    		scrollPane.setBounds(25, 100, 750, 120);
+
     		//Add the scroll pane to this panel.
             
-    		mainComponent.add(air);
-    		mainComponent.add(scrollPane, BorderLayout.NORTH);
+    		airmilePane.add(air);
+    		airmilePane.add(scrollPane, BorderLayout.NORTH);
+    		
+    		statPane.add(airmilePane);
+
     		mainComponent.revalidate();
     		mainComponent.repaint();
     	}
 		
 		else if ("planeStats".equals(evt.getActionCommand()))
     	{
+			planePane = new JPanel();
+			planePane.setLayout(null);
+			planePane.setPreferredSize(new Dimension(800,800));
+			planePane.setBounds(0, 80, 800, 720);
+			
 			// Create Personnel Table
     		Object[][] data = dc.getCountFlightsTable();
     		
@@ -212,12 +240,19 @@ public class StatPage extends Page implements ActionListener
     		}
     		
     		JLabel air = new JLabel("Flights");
+    		air.setBounds(350, 60, 120, 40);
+
     		//Create the scroll pane and add the table to it.
     		scrollPane = new JScrollPane(table);
+    		scrollPane.setBounds(25, 100, 750, 120);
+
     		//Add the scroll pane to this panel.
             
-    		mainComponent.add(air);
-    		mainComponent.add(scrollPane, BorderLayout.NORTH);
+    		planePane.add(air);
+    		planePane.add(scrollPane, BorderLayout.NORTH);
+    		
+    		statPane.add(planePane);
+    		
     		mainComponent.revalidate();
     		mainComponent.repaint();
     	}
