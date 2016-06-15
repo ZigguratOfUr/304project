@@ -67,6 +67,7 @@ public class DatabaseConnecter
 																	};
 
 	
+	public static final String[] MY_TICKETS_TABLE_COLUMN_NAMES = {"Destination", "Departure Time", "Class", "Seat"};
 	Connection con;
 	
 	public DatabaseConnecter() throws SQLException
@@ -191,6 +192,38 @@ public class DatabaseConnecter
 		}
 	}
 	
+	public ResultSet getTickets(int passengerId) throws SQLException
+	{
+		PreparedStatement stmt = con.prepareStatement("SELECT destination, departureTime, class, seat FROM ticket t, flight f WHERE t.flightId = f.id AND passengerId = ?");
+		stmt.setInt(1, passengerId);
+		return stmt.executeQuery();
+	}
+	
+	public Object[][] getTicketsTable(int passengerId)
+	{
+		ResultSet rs;
+		List<Object[]> data = new LinkedList<Object[]>();
+		
+		try
+		{
+			rs = getTickets(passengerId);
+
+			while(rs.next())
+			{
+				Object[] row = {rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)};
+				data.add(row);
+			}
+			rs.close();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+
+		Object[][] table=new Object[data.size()][];
+		return data.toArray(table);
+	}
+	
 	public ResultSet getPlanes() throws SQLException
 	{
 		Statement stmt = con.createStatement();
@@ -234,16 +267,16 @@ public class DatabaseConnecter
 		{
 			if (password.equals(rs.getString(4)))
 			{
-				return 2;
+				return rs.getInt(1);
 			}
 			else
 			{
-				return 1;
+				return -2;
 			}
 		}
 		else
 		{
-			return 0;
+			return -1;
 		}
 	}
 	

@@ -1,7 +1,9 @@
 package main;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,7 +33,8 @@ import javax.swing.JRadioButton;
 public class BuyTicketsPage extends Page implements ActionListener, ListSelectionListener {
 	
 	JButton b1, b2;
-	JScrollPane scrollPane;
+	JScrollPane scrollPane, myTicketsPane;
+	JLabel myTickets;
 	
 	Object[][] data = dc.getScheduledFlightTable();
 	JTable table = new JTable(data, DatabaseConnecter.VIEW_FLIGHT_TABLE_COLUMN_NAMES);
@@ -87,14 +90,43 @@ public class BuyTicketsPage extends Page implements ActionListener, ListSelectio
         }
         
         scrollPane = new JScrollPane(table);
-        
         mainComponent.add(scrollPane);
+
+        getMyTickets();
         mainComponent.revalidate();
         mainComponent.repaint();
 	}
                 
 
-	
+	public void getMyTickets()
+	{
+		if (myTicketsPane!= null)
+		{
+			mainComponent.remove(myTicketsPane);
+			mainComponent.remove(myTickets);
+		}
+		
+        myTickets = new JLabel();
+        myTickets.setText("My tickets");
+        myTickets.setFont(new Font(myTickets.getFont().getFontName(), 0, 16));
+        mainComponent.add(myTickets);
+		
+		Object[][] data = dc.getTicketsTable(mainComponent.loginId);
+		
+		JTable table = new JTable(data, DatabaseConnecter.MY_TICKETS_TABLE_COLUMN_NAMES);
+		table.setPreferredScrollableViewportSize(new Dimension(700, 120));
+		table.setFillsViewportHeight(true);
+		
+		if (myTicketsPane!= null)
+		{
+			mainComponent.remove(myTicketsPane);
+		}
+		//Create the scroll pane and add the table to it.
+		myTicketsPane = new JScrollPane(table);
+		//Add the scroll pane to this panel.
+        
+		mainComponent.add(myTicketsPane);
+	}
 	
 	
 	
@@ -132,6 +164,12 @@ public class BuyTicketsPage extends Page implements ActionListener, ListSelectio
 		{
 			mainComponent.remove(scrollPane);
 		}
+		
+		if (myTicketsPane!= null)
+		{
+			mainComponent.remove(myTicketsPane);
+			mainComponent.remove(myTickets);
+		}
 	}
 
 	@Override
@@ -145,8 +183,8 @@ public class BuyTicketsPage extends Page implements ActionListener, ListSelectio
 										  JOptionPane.YES_NO_OPTION,
 										  JOptionPane.QUESTION_MESSAGE);
 			if( result == JOptionPane.YES_OPTION ){
-				String [] options = { "economy", "business", "first", "super-first"};
-				String [] seats = {"window", "normal", "pilot's seat"};
+				String [] options = { "economy", "business", "first"};
+				String [] seats = {"window", "normal"};
 				
 				
 				
@@ -177,16 +215,6 @@ public class BuyTicketsPage extends Page implements ActionListener, ListSelectio
 				String seat = seats[seatChoice];
 				
 				
-				String input = JOptionPane.showInputDialog(null,
-														   "Enter passenger ID:",
-														   "Passenger ID",
-														   JOptionPane.DEFAULT_OPTION);
-				// the temporary passenger input id
-				int numInput;
-				numInput = Integer.valueOf(input);
-				
-				System.out.println(numInput);
-				
 				//the ticket ID
 				int tID;
 				
@@ -203,7 +231,7 @@ public class BuyTicketsPage extends Page implements ActionListener, ListSelectio
 														  
 //				try {
 //					// put the flight ID into this
-//			dc.buyTicket(tID,option,seat,numInput,sPurchase);
+//			dc.buyTicket(tID,option,seat,mainComponent.loginId,sPurchase);
 //				} catch(SQLException s) {
 //					System.out.println("Got an SQL error");
 //					s.printStackTrace();
@@ -216,6 +244,7 @@ public class BuyTicketsPage extends Page implements ActionListener, ListSelectio
 										   "The purchase of ticket for flight" + " " + ":" + " " + sPurchase + " has been successful",
 										   "Confirmation",
 										   JOptionPane.INFORMATION_MESSAGE);
+			getMyTickets();
 			}
 			}
 		else{

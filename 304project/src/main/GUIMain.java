@@ -9,9 +9,11 @@ public class GUIMain extends JPanel implements ActionListener
 	private static DatabaseConnecter dc;
 	static JFrame frame;
 	Page currentPage;
+	int loginId;
 	
     public GUIMain()
     {
+    	loginId = -1;
     	currentPage = new StartPage(this, dc);
     	currentPage.createPage();
     }
@@ -108,18 +110,14 @@ public class GUIMain extends JPanel implements ActionListener
     		revalidate();
     		repaint();
     	}
-    	/*
-=======
->>>>>>> master
     	else if ("gotoBuyTicketsPage".equals(evt.getActionCommand()))
     	{
     		currentPage.cleanPage();
     		currentPage = new BuyTicketsPage(this, dc);
-<<<<<<< HEAD
     		currentPage.createPage();
     		revalidate();
     		repaint();
-    	}*/
+    	}
     	else if ("gotoPersonnelPage".equals(evt.getActionCommand()))
     	{
     		currentPage.cleanPage();

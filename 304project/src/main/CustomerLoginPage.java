@@ -141,8 +141,9 @@ public class CustomerLoginPage extends Page implements ActionListener
 				e.printStackTrace();
 			}
 			
-			if(result == 2)
+			if(result != -2)
 			{
+				mainComponent.loginId = result;
 				mainComponent.actionPerformed(new ActionEvent(this, 0, "gotoCustomerMainPage"));
 			}
 			else
@@ -150,12 +151,12 @@ public class CustomerLoginPage extends Page implements ActionListener
 				t1.setText("");
 				p1.setText("");
 				
-				if (result == 0)
+				if (result == -1)
 				{
 					w2.setText("");
 					w1.setText("No such user.");
 				}
-				else if (result == 1)
+				else if (result == -2)
 				{
 					w1.setText("");
 					w2.setText("Incorrect password.");
