@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.sql.Timestamp;
@@ -76,6 +77,60 @@ public class DatabaseConnecter
 		con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1522:ug",  "ora_z5r8", "a34072124"); //ssh r0e9@remote.ugrad.cs.ubc.ca -L 1522:dbhost.ugrad.cs.ubc.ca:1522
 
 	}
+	public ResultSet getViewFlightsPartial(ArrayList<String> columns, String origin, String destination) throws SQLException
+	{
+		String query = "SELECT ";
+		for (int i = 0; i < columns.size(); i++)
+		{
+			if (i != columns.size()-1)
+			{
+				query += columns.get(i) + ", ";
+			}
+			else
+			{
+				query += columns.get(i);
+			}
+		}
+		query += " FROM flight WHERE status <> 'Landed' AND status <> 'Lost' AND LOWER(origin) LIKE LOWER(?) AND LOWER(destination) LIKE LOWER(?)";
+		PreparedStatement stmt = con.prepareStatement(query);
+		stmt.setString(1, "%" + origin + "%");
+		stmt.setString(2, "%" + destination + "%");
+
+		return stmt.executeQuery();
+	}
+	
+	public Object[][] getViewFlightTablePartial(ArrayList<String> columns, String origin, String destination)
+	{
+		ResultSet rs;
+		List<Object[]> data = new LinkedList<Object[]>();
+		
+		try
+		{
+			rs = getViewFlightsPartial(columns, origin, destination);
+			
+			while(rs.next())
+			{
+				Object[] row = new String[columns.size()];
+				for(int i = 0; i < columns.size(); i++)
+				{
+					row[i] = rs.getString(i+1);
+				}
+				data.add(row);
+			}
+			rs.close();
+		}
+		
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		Object[][] table=new Object[data.size()][];
+	    
+		return data.toArray(table);
+		
+	}
+	
 	// getViewFlights for flightID
 	public ResultSet getViewFlights() throws SQLException
 	{
