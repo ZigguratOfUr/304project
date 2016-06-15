@@ -67,7 +67,7 @@ public class DatabaseConnecter
 																	};
 
 	
-	public static final String[] MY_TICKETS_TABLE_COLUMN_NAMES = {"Destination", "Departure Time", "Class", "Seat"};
+	public static final String[] MY_TICKETS_TABLE_COLUMN_NAMES = {"Flight Id", "Destination", "Departure Time", "Class", "Seat"};
 	Connection con;
 	
 	public DatabaseConnecter() throws SQLException
@@ -194,7 +194,7 @@ public class DatabaseConnecter
 	
 	public ResultSet getTickets(int passengerId) throws SQLException
 	{
-		PreparedStatement stmt = con.prepareStatement("SELECT destination, departureTime, class, seat FROM ticket t, flight f WHERE t.flightId = f.id AND passengerId = ?");
+		PreparedStatement stmt = con.prepareStatement("SELECT f.id, destination, departureTime, class, seat FROM ticket t, flight f WHERE t.flightId = f.id AND passengerId = ?");
 		stmt.setInt(1, passengerId);
 		return stmt.executeQuery();
 	}
@@ -210,7 +210,7 @@ public class DatabaseConnecter
 
 			while(rs.next())
 			{
-				Object[] row = {rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)};
+				Object[] row = {rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)};
 				data.add(row);
 			}
 			rs.close();
@@ -573,19 +573,19 @@ public class DatabaseConnecter
  	}
 	
 
-	// check if passenger is already on the table?
-//	public void buyTicket(int id, String classP, String seat, int pID, int fID) throws SQLException {
-//		PreparedStatement stmt = con.prepareStatement("insert into Ticket value(?, ?, ?, ?, ?)");
-//		stmt.setInt(1, id);
-//		stmt.setString(2, classP);
-//		stmt.setString(3, seat);
-//		stmt.setInt(4, pID);
-//		stmt.setInt(5, fID);
-//		
-//		stmt.executeUpdate();
-//		
-//		
-//	}
+
+	public void buyTicket(int id, String classP, String seat, int pID, int fID) throws SQLException {
+		PreparedStatement stmt = con.prepareStatement("insert into Ticket values(?, ?, ?, ?, ?)");
+		stmt.setInt(1, id);
+		stmt.setString(2, classP);
+		stmt.setString(3, seat);
+		stmt.setInt(4, pID);
+		stmt.setInt(5, fID);
+		
+		stmt.executeUpdate();
+		
+		
+	}
 	
 	public int getTicketID() throws SQLException
 	{
@@ -596,6 +596,7 @@ public class DatabaseConnecter
 	    
 	    rs = stmt.getResultSet();
 ////	    id = (int) rs.getLong(1) + 1;
+	    rs.next();
 	    id = rs.getInt(1) + 1;
 	    return id;
 	}
