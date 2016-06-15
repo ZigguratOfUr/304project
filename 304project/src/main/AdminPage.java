@@ -7,7 +7,7 @@ import javax.swing.JButton;
 
 public class AdminPage extends Page implements ActionListener{
 
-	JButton b1, b2, b3, b4;
+	JButton b1, b2, b3, b4,b5;
 	
 	public AdminPage(GUIMain mainComponent, DatabaseConnecter dc) {
 		super(mainComponent, dc);
@@ -20,6 +20,7 @@ public class AdminPage extends Page implements ActionListener{
 		b2 = createButton(b2, "Manage Personnel", "gotoPersonnelPage");
 		b3 = createButton(b3, "Manage Planes", "gotoPlanesPage");
 		b4 = createButton(b4, "Flights", "gotoFlightsPage");
+		b5 = createButton(b5, "Stats", "gotoStatPage");
 	}
 
 	@Override
@@ -29,6 +30,7 @@ public class AdminPage extends Page implements ActionListener{
 		mainComponent.remove(b2);
 		mainComponent.remove(b3);
 		mainComponent.remove(b4);
+		mainComponent.remove(b5);
 	}
 
 	@Override

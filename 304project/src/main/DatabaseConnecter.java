@@ -69,6 +69,11 @@ public class DatabaseConnecter
 
 	
 	public static final String[] MY_TICKETS_TABLE_COLUMN_NAMES = {"Flight Id", "Destination", "Departure Time", "Class", "Seat"};
+	
+	public static final String[] PERSONNEL_STAT_TABLE_COLUMN_NAMES = {"Airline", "Count"};
+	
+	public static final String[] AIRMILES_STAT_TABLE_COLUMN_NAMES = {"Average airmiles", "Min airmiles", "Max airmiles"};
+	
 	Connection con;
 	
 	public DatabaseConnecter() throws SQLException
@@ -551,39 +556,6 @@ public class DatabaseConnecter
 		return data.toArray(table);
 		
 	}
-
-// Query to see how many flights each plane within each airline has flown
-
- public ResultSet getCountFlights() throws SQLException{
-	 Statement stmt = con.createStatement();
-	 return stmt.executeQuery("SELECT a.airlineName as airline, p.model as model, count(*) as numflights FROM Airline a, plane p, flight f "
-	 		+ "WHERE a.id = p.airlineid AND f.planeid = p.id GROUP BY a.airlineName, p.model");
- }
- public Object[][] getCountFlightsTable(){
-		ResultSet countFlights;
-		List<Object[]> data = new LinkedList<Object[]>();
-		
-		try
-		{
-			countFlights = getCountFlights();
-			while(countFlights.next())
-			{
-				Object[] row = {countFlights.getString(1),countFlights.getString(2), countFlights.getInt(3)	
-				};
-				data.add(row);
-			}
-			countFlights.close();
-			
-		}
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
-		
-		Object[][] table=new Object[data.size()][];
-		return data.toArray(table);
-		
-	}
  
  public void ScheduleFlight (int flightId, String departureTime, String arrivalTime, String scheduledDepartureTime, String scheduledArrivalTime, String origin, String destination, String status, int planeId, int airlineId){
 	 PreparedStatement stmt;
@@ -735,5 +707,163 @@ public class DatabaseConnecter
 		rs.close();
 		return fid;
 	}
+	
+	// Query to see how many flights each plane within each airline has flown
+
+	 public ResultSet getCountFlights() throws SQLException{
+		 Statement stmt = con.createStatement();
+		 return stmt.executeQuery("SELECT a.airlineName as airline, p.id as planeID, count(*) as numflights FROM Airline a, plane p, flight f "
+		 		+ "WHERE a.id = p.airlineid AND f.planeid = p.id GROUP BY a.airlineName, p.id ORDER BY a.airlineName");
+	 }
+	 public Object[][] getCountFlightsTable(){
+			ResultSet countFlights;
+			List<Object[]> data = new LinkedList<Object[]>();
+			
+			try
+			{
+				countFlights = getCountFlights();
+				while(countFlights.next())
+				{
+					Object[] row = {countFlights.getString(1),countFlights.getString(2), countFlights.getInt(3)	
+					};
+					data.add(row);
+				}
+				countFlights.close();
+				
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+			
+			Object[][] table=new Object[data.size()][];
+			return data.toArray(table);
+			
+		}
+	 
+	 public ResultSet getPersonnelTotal() throws SQLException{
+		 Statement stmt = con.createStatement();
+		 return stmt.executeQuery("SELECT airlineName, count(p.id) FROM Personnel p, Airline a WHERE p.airlineID = a.id GROUP BY airlineName");
+	 }
+	 
+	 public Object[][] getPersonnelTotalTable(){
+			ResultSet countPersonnel;
+			List<Object[]> data = new LinkedList<Object[]>();
+			
+			try
+			{
+				 countPersonnel = getPersonnelTotal();
+				while( countPersonnel.next())
+				{
+					Object[] row = { countPersonnel.getString(1), countPersonnel.getLong(2)
+					};
+					data.add(row);
+				}
+				 countPersonnel.close();
+				
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+			
+			Object[][] table=new Object[data.size()][];
+			return data.toArray(table);
+			
+		}
+	 
+	 public ResultSet getFATotal() throws SQLException{
+		 Statement stmt = con.createStatement();
+		 return stmt.executeQuery("SELECT airlineName, count(f.id) FROM FlightAttendant f, Personnel p, Airline a WHERE f.id = p.id AND p.airlineID = a.id GROUP BY airlineName");
+	 }
+	 
+	 public Object[][] getFATotalTable(){
+			ResultSet countPersonnel;
+			List<Object[]> data = new LinkedList<Object[]>();
+			
+			try
+			{
+				 countPersonnel = getFATotal();
+				while( countPersonnel.next())
+				{
+					Object[] row = { countPersonnel.getString(1), countPersonnel.getLong(2)
+					};
+					data.add(row);
+				}
+				 countPersonnel.close();
+				
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+			
+			Object[][] table=new Object[data.size()][];
+			return data.toArray(table);
+			
+		}
+	 
+	 public ResultSet getPilotTotal() throws SQLException{
+		 Statement stmt = con.createStatement();
+		 return stmt.executeQuery("SELECT airlineName, count(pi.id) FROM Pilot pi, Personnel p, Airline a WHERE pi.id = p.id AND p.airlineID = a.id GROUP BY airlineName");
+	 }
+	 
+	 public Object[][] getPilotTotalTable(){
+			ResultSet countPersonnel;
+			List<Object[]> data = new LinkedList<Object[]>();
+			
+			try
+			{
+				 countPersonnel = getPilotTotal();
+				while( countPersonnel.next())
+				{
+					Object[] row = { countPersonnel.getString(1), countPersonnel.getLong(2)
+					};
+					data.add(row);
+				}
+				 countPersonnel.close();
+				
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+			
+			Object[][] table=new Object[data.size()][];
+			return data.toArray(table);
+			
+		}
+	 
+	 public ResultSet airMilesStats() throws SQLException{
+		 Statement  stmt = con.createStatement();
+		 return stmt.executeQuery("SELECT AVG(airMiles), MIN(airMiles), MAX(airMiles) FROM Passenger");
+	 }
+	 
+	 public Object[][] getairMileTable(){
+			ResultSet airmiles;
+			List<Object[]> data = new LinkedList<Object[]>();
+			
+			try
+			{
+				airmiles = airMilesStats();
+				while( airmiles .next())
+				{
+					Object[] row = { airmiles .getString(1), airmiles.getLong(2), airmiles.getLong(3)
+					};
+					data.add(row);
+				}
+				airmiles.close();
+				
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+			
+			Object[][] table=new Object[data.size()][];
+			return data.toArray(table);
+			
+		}
+	 
 
 }
