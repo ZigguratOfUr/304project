@@ -707,14 +707,22 @@ public class DatabaseConnecter
 		return b;
 	}
 
-	public void assignPersonnelToCrew(long pid, long fid) throws SQLException {
+	public boolean assignPersonnelToCrew(long pid, long fid) throws SQLException{
 		// TODO Auto-generated method stub
 		System.out.println("ASSIGNING PERSONNEL: " + pid + " TO FLIGHT " + fid + "....");
 		PreparedStatement assign = con.prepareStatement("insert into flightcrew values(?, ?)");
 		assign.setLong(1, pid);
-		assign.setLong(2, fid);
-		assign.executeUpdate();
-		assign.close();
+		assign.setLong(2,  fid);
+		try
+		{
+			assign.executeUpdate();
+			assign.close();
+			return true;
+		}
+		catch(SQLException e)
+		{
+			return false;
+		}
 	}
 
 	public long getCrewFid(long pid) throws SQLException {

@@ -41,15 +41,23 @@ public class AssignCrewPage extends Page implements ActionListener {
 			long fid = Long.parseLong(JDD_flights.getSelectedItem().toString());
 			
 			try {
-			if(!dc.pAssigned(pid)) {
-				
-					dc.assignPersonnelToCrew(pid, fid);
-					JOptionPane.showMessageDialog(mainComponent, "Personnel with id= " + pid + " successfully assigned to " +
-												"flight " + fid, "CREW ASSIGNMENT SUCCESSFUL", JOptionPane.PLAIN_MESSAGE);
-			} else {
-				long cFid = dc.getCrewFid(pid);
-				JOptionPane.showMessageDialog(mainComponent, "Personnel with id = " + pid + " already assigned to "
-						+ "flight with id = " + cFid, "CREW ASSIGNMENT UNSUCCESSFUL", JOptionPane.ERROR_MESSAGE);
+				if (!dc.pAssigned(pid)) {
+
+					if (dc.assignPersonnelToCrew(pid, fid)) {
+						JOptionPane.showMessageDialog(mainComponent,
+								"Personnel with id= " + pid + " successfully assigned to " + "flight " + fid,
+								"CREW ASSIGNMENT SUCCESSFUL", JOptionPane.PLAIN_MESSAGE);
+
+					} else {
+						JOptionPane.showMessageDialog(mainComponent,
+								"Personnel with id= " + pid + " was not successfully assigned to " + "flight " + fid + " due to constraint violation.",
+								"CREW ASSIGNMENT UNSUCCESSFUL", JOptionPane.ERROR_MESSAGE);
+					}
+				} else {
+					long cFid = dc.getCrewFid(pid);
+					JOptionPane.showMessageDialog(mainComponent,
+							"Personnel with id = " + pid + " already assigned to " + "flight with id = " + cFid,
+							"CREW ASSIGNMENT UNSUCCESSFUL", JOptionPane.ERROR_MESSAGE);
 				}
 			} catch (SQLException s) {
 				s.printStackTrace();
