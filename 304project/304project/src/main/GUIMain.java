@@ -186,6 +186,14 @@ public class GUIMain extends JPanel implements ActionListener
     		revalidate();
     		repaint();
     	}
+       	else if ("gotoAssignCrewPage".equals(evt.getActionCommand()))
+    	{
+    		currentPage.cleanPage();
+    		currentPage = new AssignCrewPage(this, dc);
+    		currentPage.createPage();
+    		revalidate();
+    		repaint();
+    	}
     	
     }
 
