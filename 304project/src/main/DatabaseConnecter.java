@@ -839,6 +839,24 @@ public class DatabaseConnecter
 		 return stmt.executeQuery("SELECT AVG(airMiles), MIN(airMiles), MAX(airMiles) FROM Passenger");
 	 }
 	 
+	 public ResultSet airMilesStats(String op) throws SQLException {
+		 Statement  stmt = con.createStatement();
+		 return stmt.executeQuery("SELECT " + op + "(airMiles) FROM Passenger");
+	 }
+	 
+	 public int getAirMileStatResult(String op)
+	 {
+		 try {
+			ResultSet rs = airMilesStats(op);
+			rs.next();
+			return rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+			return -1;
+		}
+	 }
+	 
 	 public Object[][] getairMileTable(){
 			ResultSet airmiles;
 			List<Object[]> data = new LinkedList<Object[]>();

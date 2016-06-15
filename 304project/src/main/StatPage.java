@@ -18,6 +18,8 @@ public class StatPage extends Page implements ActionListener
 	private final String [] OP =  {"MIN", "MAX", "AVG"};
 	
 	JPanel statPane, airmilePane, planePane, personnelPane;
+	JComboBox ops;
+	JLabel total;
 	
 	JScrollPane scrollPane;
 	JLabel personnel;
@@ -103,6 +105,13 @@ public class StatPage extends Page implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent evt)
 	{
+		if("UpdateAirMilesTable".equals(evt.getActionCommand()))
+		{
+			int result = dc.getAirMileStatResult(ops.getSelectedItem().toString());
+			total.setText(String.valueOf(result));
+			return;
+		}
+		
 		if(airmilePane!= null)
 		{
 			statPane.remove(airmilePane);
@@ -188,31 +197,41 @@ public class StatPage extends Page implements ActionListener
 			airmilePane.setPreferredSize(new Dimension(800,800));
 			airmilePane.setBounds(0, 80, 800, 720);
 			
-			JComboBox ops = new JComboBox(OP);
-			
+			ops = new JComboBox(OP);
+			ops.addActionListener(this);
+			ops.setSelectedIndex(2);
+			ops.setActionCommand("UpdateAirMilesTable");
+			ops.setBounds(140, 60, 60, 25);
+			int result = dc.getAirMileStatResult(ops.getSelectedItem().toString());
 			// Create Personnel Table
-    		Object[][] data = dc.getairMileTable();
+//    		Object[][] data = dc.getairMileTable();
+//    		
+//    		JTable table = new JTable(data, DatabaseConnecter.AIRMILES_STAT_TABLE_COLUMN_NAMES);
+//    		table.setPreferredScrollableViewportSize(new Dimension(750, 120));
+//    		table.setFillsViewportHeight(true);
+//    		
+//    		if (scrollPane!= null)
+//    		{
+//    			mainComponent.remove(scrollPane);
+//    		}
     		
-    		JTable table = new JTable(data, DatabaseConnecter.AIRMILES_STAT_TABLE_COLUMN_NAMES);
-    		table.setPreferredScrollableViewportSize(new Dimension(750, 120));
-    		table.setFillsViewportHeight(true);
-    		
-    		if (scrollPane!= null)
-    		{
-    			mainComponent.remove(scrollPane);
-    		}
-    		
-    		JLabel air = new JLabel("Air Miles");
-    		air.setBounds(350, 60, 120, 40);
+    		JLabel air = new JLabel("Air Miles per customer =");
+    		air.setBounds(200, 60, 240, 25);
+
+    		total = new JLabel(String.valueOf(result));
+    		total.setBounds(440, 60, 50, 25);
 
     		//Create the scroll pane and add the table to it.
-    		scrollPane = new JScrollPane(table);
-    		scrollPane.setBounds(25, 100, 750, 120);
+//    		scrollPane = new JScrollPane(table);
+//    		scrollPane.setBounds(25, 100, 750, 120);
 
     		//Add the scroll pane to this panel.
             
     		airmilePane.add(air);
-    		airmilePane.add(scrollPane, BorderLayout.NORTH);
+    		airmilePane.add(ops);
+    		airmilePane.add(total);
+
+//    		airmilePane.add(scrollPane, BorderLayout.NORTH);
     		
     		statPane.add(airmilePane);
 
