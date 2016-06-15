@@ -149,7 +149,7 @@ public class GUIMain extends JPanel implements ActionListener
     		currentPage.createPage();
     		revalidate();
     		repaint();
-    	}
+    	}*/
     	else if ("gotoAssignCrewPage".equals(evt.getActionCommand()))
     	{
     		currentPage.cleanPage();
@@ -158,7 +158,7 @@ public class GUIMain extends JPanel implements ActionListener
     		revalidate();
     		repaint();
     	}
-    	*/
+    	
     	else if ("gotoHiringPage".equals(evt.getActionCommand()))
     	{
     		currentPage.cleanPage();

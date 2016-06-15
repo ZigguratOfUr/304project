@@ -694,4 +694,38 @@ public class DatabaseConnecter
 		}
 	}
 
+	public boolean pAssigned(long pid) throws SQLException {
+		boolean b = true;
+		PreparedStatement check = con.prepareStatement("select count(*) from flightcrew where personnelid = ?");
+		check.setLong(1, pid);
+		ResultSet rs = check.executeQuery();
+		rs.next();
+		int assigned = rs.getInt(1);
+		if (assigned == 0) { // Not in FlightCrew table, so not assigned yet
+			b = false;
+		}
+		return b;
+	}
+
+	public void assignPersonnelToCrew(long pid, long fid) throws SQLException {
+		// TODO Auto-generated method stub
+		System.out.println("ASSIGNING PERSONNEL: " + pid + " TO FLIGHT " + fid + "....");
+		PreparedStatement assign = con.prepareStatement("insert into flightcrew values(?, ?)");
+		assign.setLong(1, pid);
+		assign.setLong(2, fid);
+		assign.executeUpdate();
+		assign.close();
+	}
+
+	public long getCrewFid(long pid) throws SQLException {
+		// TODO Auto-generated method stub
+		PreparedStatement getFid = con.prepareStatement("select flightid from flightcrew where personnelid = ?");
+		getFid.setLong(1, pid);
+		ResultSet rs = getFid.executeQuery();
+		rs.next();
+		long fid = rs.getLong(1);
+		rs.close();
+		return fid;
+	}
+
 }
