@@ -74,6 +74,7 @@ public class DatabaseConnecter
 	
 	public static final String[] AIRMILES_STAT_TABLE_COLUMN_NAMES = {"Average airmiles", "Min airmiles", "Max airmiles"};
 	
+	public static final String[] PASSENGER_TABLE_COLUMN_NAMES = {"Passenger Id", "Passenger name"};
 	Connection con;
 	
 	public DatabaseConnecter() throws SQLException
@@ -871,6 +872,37 @@ public class DatabaseConnecter
 					data.add(row);
 				}
 				airmiles.close();
+				
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+			
+			Object[][] table=new Object[data.size()][];
+			return data.toArray(table);
+			
+		}
+	 
+	 public ResultSet beenOnallFlights() throws SQLException{
+		 Statement stmt = con.createStatement();
+		 return stmt.executeQuery("SELECT p.id, p.passengerName FROM Passenger p WHERE NOT EXISTS ((SELECT f.id FROM Flight f) MINUS (SELECT t.flightId FROM Ticket t WHERE t.passengerId = p.id))");
+
+	 }
+	 public Object[][] beenOnallFlightsTable(){
+		 	ResultSet allFlights;
+			List<Object[]> data = new LinkedList<Object[]>();
+			
+			try
+			{
+				 allFlights = beenOnallFlights();
+				while(  allFlights.next())
+				{
+					Object[] row = {  allFlights.getLong(1),  allFlights.getString(2)
+					};
+					data.add(row);
+				}
+				 allFlights.close();
 				
 			}
 			catch(SQLException e)

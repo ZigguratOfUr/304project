@@ -17,7 +17,7 @@ public class StatPage extends Page implements ActionListener
 {
 	private final String [] OP =  {"MIN", "MAX", "AVG"};
 	
-	JPanel statPane, airmilePane, planePane, personnelPane;
+	JPanel statPane, airmilePane, planePane, personnelPane, allFlights;
 	JComboBox ops;
 	JLabel total;
 	
@@ -49,7 +49,7 @@ public class StatPage extends Page implements ActionListener
         b1.setHorizontalTextPosition(AbstractButton.CENTER);
         b1.setActionCommand("createTables");
         b1.addActionListener(this);
-        b1.setBounds(175, 50, 130, 20);
+        b1.setBounds(125, 50, 130, 20);
         statPane.add(b1);
         
         JButton b2 = new JButton("AirMiles");
@@ -57,7 +57,7 @@ public class StatPage extends Page implements ActionListener
         b2.setHorizontalTextPosition(AbstractButton.CENTER);
         b2.setActionCommand("airMileStats");
         b2.addActionListener(this);
-        b2.setBounds(325, 50, 130,20);
+        b2.setBounds(275, 50, 130,20);
 
         statPane.add(b2);
         
@@ -66,18 +66,27 @@ public class StatPage extends Page implements ActionListener
         b3.setHorizontalTextPosition(AbstractButton.CENTER);
         b3.setActionCommand("planeStats");
         b3.addActionListener(this);
-        b3.setBounds(475, 50, 130,20);
+        b3.setBounds(425, 50, 130,20);
 
         statPane.add(b3);
         
-        JButton b4 = new JButton("Back");
+        JButton b4 = new JButton("Loyal Passengers");
         b4.setVerticalTextPosition(AbstractButton.BOTTOM);
         b4.setHorizontalTextPosition(AbstractButton.CENTER);
-        b4.setActionCommand("gotoAdminPage");
-        b4.addActionListener(mainComponent);
-        b4.setBounds(20, 20, 80, 25);
+        b4.setActionCommand("AllFlights");
+        b4.addActionListener(this);
+        b4.setBounds(575, 50, 160,20);
 
         statPane.add(b4);
+        
+        JButton b5 = new JButton("Back");
+        b5.setVerticalTextPosition(AbstractButton.BOTTOM);
+        b5.setHorizontalTextPosition(AbstractButton.CENTER);
+        b5.setActionCommand("gotoAdminPage");
+        b5.addActionListener(mainComponent);
+        b5.setBounds(20, 20, 80, 25);
+
+        statPane.add(b5);
         
         mainComponent.add(statPane);
         
@@ -98,6 +107,10 @@ public class StatPage extends Page implements ActionListener
 		if(personnelPane!= null)
 		{
 			statPane.remove(personnelPane);
+		}
+		if(allFlights!= null)
+		{
+			statPane.remove(allFlights);
 		}
 		mainComponent.remove(statPane);
 	}
@@ -123,6 +136,10 @@ public class StatPage extends Page implements ActionListener
 		if(personnelPane!= null)
 		{
 			statPane.remove(personnelPane);
+		}
+		if(allFlights!= null)
+		{
+			statPane.remove(allFlights);
 		}
 		if ("createTables".equals(evt.getActionCommand()))
     	{
@@ -275,6 +292,41 @@ public class StatPage extends Page implements ActionListener
     		mainComponent.revalidate();
     		mainComponent.repaint();
     	}
+		else if("AllFlights".equals(evt.getActionCommand())){
+			allFlights = new JPanel();
+			allFlights.setLayout(null);
+			allFlights.setPreferredSize(new Dimension(800,800));
+			allFlights.setBounds(0, 80, 800, 720);
+			
+			// Create Personnel Table
+    		Object[][] data = dc.beenOnallFlightsTable();
+    		
+    		JTable table = new JTable(data, DatabaseConnecter.PASSENGER_TABLE_COLUMN_NAMES);
+    		table.setPreferredScrollableViewportSize(new Dimension(750, 120));
+    		table.setFillsViewportHeight(true);
+    		
+    		if (scrollPane!= null)
+    		{
+    			mainComponent.remove(scrollPane);
+    		}
+    		
+    		JLabel air = new JLabel("Passenger That Has Been on Every Flight");
+    		air.setBounds(250, 60, 300, 40);
+
+    		//Create the scroll pane and add the table to it.
+    		scrollPane = new JScrollPane(table);
+    		scrollPane.setBounds(25, 100, 750, 120);
+
+    		//Add the scroll pane to this panel.
+            
+    		allFlights.add(air);
+    		allFlights.add(scrollPane, BorderLayout.NORTH);
+    		
+    		statPane.add(allFlights);
+    		
+    		mainComponent.revalidate();
+    		mainComponent.repaint();
+		}
 		
 		
 		
